@@ -12,9 +12,17 @@ import './styles/app.css';
 
 // start the Stimulus application
 import './bootstrap';
+import {Home} from "./components/Home";
 
+/*
+* Liste :
+* Bouton de redirection vers connexion
+* Bouton de redirection vers inscription
+* Requête pour la liste des questions sur la home
+* S'il est connecté , bouton logout à la place du bouton connexion
+* */
 function App() {
-    return <h1>Hello World !</h1>;
+    return <Home/>;
 }
 
 ReactDOM.render(<App/>, document.getElementById('root'));
