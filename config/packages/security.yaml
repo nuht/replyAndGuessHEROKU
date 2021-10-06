@@ -19,6 +19,11 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        api_token_refresh:
+            pattern: ^/api/token/refresh
+            stateless: true
+            #refresh_jwt: ~
+
         login:
             pattern: ^/api/login
             stateless: true
@@ -58,3 +63,4 @@ security:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/users, roles: IS_AUTHENTICATED_FULLY, methods: [GET] }
         - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [POST] }
+        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
