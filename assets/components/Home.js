@@ -22,3 +22,13 @@ export function Home() {
         </div>
     );
 }
+
+
+/*
+* he does that on the client side - creating an interceptor.
+* He sends a request to GET the list, if the response is 401 Unauthorized,
+* the interceptor automatically makes another request to /api/token/refresh,
+* this triggers the listeners (I think), setting the cookies and then the interceptor
+* runs the original GET request to get the list.
+* You can use the interceptor from a npm package axios-auth-refresh.
+*/
