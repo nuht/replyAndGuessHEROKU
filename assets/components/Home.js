@@ -6,7 +6,8 @@ export function Home() {
         fetch('http://localhost:8000/api/questions').then((response) => {
             return response.json();
         }).then((body) => {
-            setListeDeQuestions(body['hydra:member']);
+            let listeQuestion = body['hydra:member'];
+            setListeDeQuestions(listeQuestion);
             console.log(body);
         }).catch((error) => {
             console.log(error);
