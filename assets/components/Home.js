@@ -3,7 +3,7 @@ import React from "react";
 export function Home() {
     const [listeDeQuestions, setListeDeQuestions] = React.useState([]);
     React.useEffect(() => {
-        fetch('http://localhost:8000/api/questions').then((response) => {
+        fetch('http://localhost:8002/api/questions').then((response) => {
             return response.json();
         }).then((body) => {
             let listeQuestion = body['hydra:member'];
