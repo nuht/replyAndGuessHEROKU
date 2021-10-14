@@ -22,10 +22,6 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager, )
     {
-        /*$dql = 'ALTER TABLE question AUTO_INCREMENT = 1';
-        $query = $this->em->createQuery($dql);
-        $query->execute();*/
-
         //  php bin/console doctrine:fixtures:load
         $questions =
         [
@@ -51,14 +47,14 @@ class AppFixtures extends Fixture
             ['Jedi ou Sith ?', 'Jedi', 'Sith'],
         ];
 
-        foreach ($questions as $question) {
+        /*foreach ($questions as $question) {
             $element = new Question();
             $element->setText($question[0]);
             $element->setProp1($question[1]);
             $element->setProp2($question[2]);
             $manager->persist($element);
             //sleep(20);
-        }
+        }*/
 
         $users = [
             ['Quentin@gmail.com', 'passwordQuentin', 'Quentin'],
@@ -79,6 +75,7 @@ class AppFixtures extends Fixture
             $password = $this->passwordHasher->hashPassword($element, $user[1]);
             $element->setPassword($password);
             $element->setUsername($user[2]);
+            $element->setIsPending(0);
             $manager->persist($element);
         }
 

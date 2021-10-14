@@ -20,48 +20,33 @@ class Question
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $text;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="boolean")
      */
-    private $prop_1;
+    private $is_required;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToOne(targetEntity=Multiple::class, inversedBy="question", cascade={"persist", "remove"})
      */
-    private $prop_2;
+    private $multiple;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\OneToOne(targetEntity=TextArea::class, inversedBy="question", cascade={"persist", "remove"})
      */
-    private $date_prop;
+    private $text_area;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\ManyToOne(targetEntity=Survey::class, inversedBy="questions")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $date_val;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $date_refus;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $date_publication;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $date_fermeture;
-
+    private $survey;
+    
     public function __construct()
     {
-        $this->setDateProp(new \DateTime('NOW', new \DateTimeZone('Europe/Paris')));
     }
 
     public function getId(): ?int
@@ -81,86 +66,50 @@ class Question
         return $this;
     }
 
-    public function getProp1(): ?string
+    public function getIsRequired(): ?bool
     {
-        return $this->prop_1;
+        return $this->is_required;
     }
 
-    public function setProp1(string $prop_1): self
+    public function setIsRequired(bool $is_required): self
     {
-        $this->prop_1 = $prop_1;
+        $this->is_required = $is_required;
 
         return $this;
     }
 
-    public function getProp2(): ?string
+    public function getMultiple(): ?Multiple
     {
-        return $this->prop_2;
+        return $this->multiple;
     }
 
-    public function setProp2(string $prop_2): self
+    public function setMultiple(?Multiple $multiple): self
     {
-        $this->prop_2 = $prop_2;
+        $this->multiple = $multiple;
 
         return $this;
     }
 
-    public function getDateProp(): ?\DateTimeInterface
+    public function getTextArea(): ?TextArea
     {
-        return $this->date_prop;
+        return $this->text_area;
     }
 
-    public function setDateProp(\DateTimeInterface $date_prop): self
+    public function setTextArea(?TextArea $text_area): self
     {
-        $this->date_prop = $date_prop;
+        $this->text_area = $text_area;
 
         return $this;
     }
 
-    public function getDateVal(): ?\DateTimeInterface
+    public function getSurvey(): ?Survey
     {
-        return $this->date_val;
+        return $this->survey;
     }
 
-    public function setDateVal(?\DateTimeInterface $date_val): self
+    public function setSurvey(?Survey $survey): self
     {
-        $this->date_val = $date_val;
-
-        return $this;
-    }
-
-    public function getDateRefus(): ?\DateTimeInterface
-    {
-        return $this->date_refus;
-    }
-
-    public function setDateRefus(?\DateTimeInterface $date_refus): self
-    {
-        $this->date_refus = $date_refus;
-
-        return $this;
-    }
-
-    public function getDatePublication(): ?\DateTimeInterface
-    {
-        return $this->date_publication;
-    }
-
-    public function setDatePublication(?\DateTimeInterface $date_publication): self
-    {
-        $this->date_publication = $date_publication;
-
-        return $this;
-    }
-
-    public function getDateFermeture(): ?\DateTimeInterface
-    {
-        return $this->date_fermeture;
-    }
-
-    public function setDateFermeture(?\DateTimeInterface $date_fermeture): self
-    {
-        $this->date_fermeture = $date_fermeture;
+        $this->survey = $survey;
 
         return $this;
     }
