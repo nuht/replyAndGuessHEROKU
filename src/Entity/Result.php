@@ -46,6 +46,11 @@ class Result
      */
     private $user_id;
 
+    public function __construct()
+    {
+        $this->setAnswerDate(new \DateTime('NOW', new \DateTimeZone('Europe/Paris')));
+    }
+
     public function getId(): ?int
     {
         return $this->id;

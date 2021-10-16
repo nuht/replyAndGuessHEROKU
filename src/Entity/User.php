@@ -41,7 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     *
+     * @Assert\NotBlank(groups={"create"})
      * @Groups({"user:read", "user:write"})
      */
     private $email;
@@ -119,15 +119,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $results;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Survey::class, inversedBy="users")
-     */
-    private $surveys;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Company::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
      */
     private $company;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Survey::class, mappedBy="user_id", orphanRemoval=true)
+     */
+    private $surveys;
 
 
     public function __construct()
@@ -375,6 +375,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getCompany(): ?Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?Company $company): self
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Survey[]
      */
@@ -387,6 +399,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->surveys->contains($survey)) {
             $this->surveys[] = $survey;
+            $survey->setUserId($this);
         }
 
         return $this;
@@ -394,19 +407,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeSurvey(Survey $survey): self
     {
-        $this->surveys->removeElement($survey);
-
-        return $this;
-    }
-
-    public function getCompany(): ?Company
-    {
-        return $this->company;
-    }
-
-    public function setCompany(?Company $company): self
-    {
-        $this->company = $company;
+        if ($this->surveys->removeElement($survey)) {
+            // set the owning side to null (unless already changed)
+            if ($survey->getUserId() === $this) {
+                $survey->setUserId(null);
+            }
+        }
 
         return $this;
     }

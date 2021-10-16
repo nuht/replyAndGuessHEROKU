@@ -7,6 +7,7 @@ use App\Repository\SurveyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * @ORM\Entity(repositoryClass=SurveyRepository::class)
@@ -56,7 +57,7 @@ class Survey
     private $config_settings = [];
 
     /**
-     * @ORM\Column(type="ulid")
+     * @ORM\Column(type="string", length=255)
      */
     private $hash;
 
@@ -71,15 +72,18 @@ class Survey
     private $results;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="surveys")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="surveys")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $users;
+    private $user_id;
 
     public function __construct()
     {
+        $this->setHash(new Ulid());
+        $this->setPublishedAt(new \DateTime('NOW', new \DateTimeZone('Europe/Paris')));
+        $this->setStatus('waiting');
         $this->questions = new ArrayCollection();
         $this->results = new ArrayCollection();
-        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -234,29 +238,14 @@ class Survey
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
+    public function getUserId(): ?User
     {
-        return $this->users;
+        return $this->user_id;
     }
 
-    public function addUser(User $user): self
+    public function setUserId(?User $user_id): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->addSurvey($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            $user->removeSurvey($this);
-        }
+        $this->user_id = $user_id;
 
         return $this;
     }
