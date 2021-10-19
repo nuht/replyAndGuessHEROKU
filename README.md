@@ -27,3 +27,8 @@ Creation de survey sur la base de ma fixtures
 ],
 "userId": "/api/users/108"
 }
+
+4 créer un sondage enregistrer direct
+puis au fur et a mesure rajouter des questions
+
+5 créer route /me et regarder sur l'user du cookie est l'user demandé
