@@ -64,3 +64,4 @@ security:
         - { path: ^/api/users, roles: IS_AUTHENTICATED_FULLY, methods: [GET] }
         - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [POST] }
         - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
+        # faire une route pour savoir si on est connecté et role is authenticated fully

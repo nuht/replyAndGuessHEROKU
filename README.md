@@ -3,6 +3,25 @@
 #### LANCER DES FIXTURES
 `php bin/console doctrine:fixtures:load`
 
+route http://127.0.0.1:8000/api/me
+qui renvoie les infos de l'user connecté.
+
+faire varier le front en fonction de s'il a le role company ou non
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 1 er endpoint a créer:

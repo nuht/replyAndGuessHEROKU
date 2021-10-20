@@ -16,7 +16,10 @@ export function Navigation() {
                 <Link className={location.pathname === '/ranking' ? 'active' : ''} to="/ranking">Classement</Link>
             </li>
             <li>
-                <Link className={location.pathname === '/register' ? 'active' : ''} to="/register">S'inscrire</Link>
+                <Link className={location.pathname === '/login' ? 'active' : ''} to="/login">Se connecter</Link>
+            </li>
+            <li>
+                <Link to="/logout">Se déconnecter</Link>
             </li>
         </ul>
     </nav>;

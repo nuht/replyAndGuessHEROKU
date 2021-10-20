@@ -31,3 +31,7 @@ services:
 
     #App\EventListener\RefreshedTokenListener:
         #arguments: ['%gesdinet_jwt_refresh_token.ttl%']
+
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']

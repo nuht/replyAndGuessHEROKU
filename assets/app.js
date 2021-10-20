@@ -17,6 +17,8 @@ import 'normalize-css';
 import {Home} from "./components/Home";
 import {Navigation} from "./components/Navigation/Navigation";
 import {Register} from "./components/Register";
+import {Login} from "./components/Login/Login";
+import {ProtegerPage} from "./components/ProtegerPage";
 
 /*
 * Liste :
@@ -31,7 +33,19 @@ function App() {
             <Navigation/>
             <Switch>
                 <Route path='/' exact>
-                    <Home/>
+                    <ProtegerPage>
+                        <Home/>
+                    </ProtegerPage>
+                </Route>
+                <Route
+                    path='/login'
+                    exact
+                    render={(routeProps) => {
+                        return <Login
+                            {...routeProps}
+                        />
+                    }}
+                >
                 </Route>
                 <Route path='/questions'>
                     <h1>Liste des questions</h1>
