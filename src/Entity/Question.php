@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=QuestionRepository::class)
@@ -22,22 +23,27 @@ class Question
     /**
      * @ORM\Column(type="text")
      */
+    #[Groups("survey:write")]
     private $text;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default" : false})
      */
-    private $is_required;
+    #[Groups("survey:write")]
+    private $isRequired;
 
     /**
      * @ORM\OneToOne(targetEntity=Multiple::class, inversedBy="question", cascade={"persist", "remove"})
      */
+    #[Groups("survey:write")]
+    /*RELIER DIRECTEMENT A CHOICES*/
     private $multiple;
 
     /**
      * @ORM\OneToOne(targetEntity=TextArea::class, inversedBy="question", cascade={"persist", "remove"})
      */
-    private $text_area;
+    #[Groups("survey:write")]
+    private $textArea;
 
     /**
      * @ORM\ManyToOne(targetEntity=Survey::class, inversedBy="questions")
@@ -68,12 +74,12 @@ class Question
 
     public function getIsRequired(): ?bool
     {
-        return $this->is_required;
+        return $this->isRequired;
     }
 
-    public function setIsRequired(bool $is_required): self
+    public function setIsRequired(bool $isRequired): self
     {
-        $this->is_required = $is_required;
+        $this->isRequired = $isRequired;
 
         return $this;
     }
@@ -92,12 +98,12 @@ class Question
 
     public function getTextArea(): ?TextArea
     {
-        return $this->text_area;
+        return $this->textArea;
     }
 
-    public function setTextArea(?TextArea $text_area): self
+    public function setTextArea(?TextArea $textArea): self
     {
-        $this->text_area = $text_area;
+        $this->textArea = $textArea;
 
         return $this;
     }

@@ -7,6 +7,7 @@ use App\Repository\MultipleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=MultipleRepository::class)
@@ -22,8 +23,9 @@ class Multiple
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Choice::class, mappedBy="multiple", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Choice::class, mappedBy="multiple", orphanRemoval=true, cascade={"persist"})
      */
+    #[Groups("survey:write")]
     private $choices;
 
     /**

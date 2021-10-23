@@ -22,10 +22,10 @@ class TextArea
     /**
      * @ORM\Column(type="text")
      */
-    private $text_answer;
+    private $textAnswer;
 
     /**
-     * @ORM\OneToOne(targetEntity=Question::class, mappedBy="text_area", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Question::class, mappedBy="textArea", cascade={"persist", "remove"})
      */
     private $question;
 
@@ -36,12 +36,12 @@ class TextArea
 
     public function getTextAnswer(): ?string
     {
-        return $this->text_answer;
+        return $this->textAnswer;
     }
 
-    public function setTextAnswer(string $text_answer): self
+    public function setTextAnswer(string $textAnswer): self
     {
-        $this->text_answer = $text_answer;
+        $this->textAnswer = $textAnswer;
 
         return $this;
     }

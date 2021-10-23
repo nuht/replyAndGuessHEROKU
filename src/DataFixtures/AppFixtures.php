@@ -80,7 +80,7 @@ Vos réponses ne seront traitées qu’à des fins statistiques et ce de manièr
 
 Merci d’avance pour votre aide.");
 
-        $survey->setUserId($userAdmin);
+        $survey->setUser($userAdmin);
         $manager->persist($survey);
         $manager->flush();
 
@@ -246,6 +246,7 @@ Merci d’avance pour votre aide.");
                 ]
             ]
         ];
+
 
         foreach ($arrayQuestion as $question) {
             $questionElement = new Question();

@@ -75,12 +75,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_pending;
+    private $isPending;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_valid;
+    private $isValid;
 
     /**
      * @ORM\Column(type="integer")
@@ -90,17 +90,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="datetime")
      */
-    private $register_date;
+    private $registerDate;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $last_update;
+    private $lastUpdate;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $last_connection_date;
+    private $lastConnectionDate;
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -114,7 +114,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $hash;
 
     /**
-     * @ORM\OneToMany(targetEntity=Result::class, mappedBy="user_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Result::class, mappedBy="user", orphanRemoval=true)
      */
     private $results;
 
@@ -125,7 +125,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $company;
 
     /**
-     * @ORM\OneToMany(targetEntity=Survey::class, mappedBy="user_id", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Survey::class, mappedBy="user", orphanRemoval=true)
      */
     private $surveys;
 
@@ -248,24 +248,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getIsPending(): ?bool
     {
-        return $this->is_pending;
+        return $this->isPending;
     }
 
-    public function setIsPending(bool $is_pending): self
+    public function setIsPending(bool $isPending): self
     {
-        $this->is_pending = $is_pending;
+        $this->isPending = $isPending;
 
         return $this;
     }
 
     public function getIsValid(): ?bool
     {
-        return $this->is_valid;
+        return $this->isValid;
     }
 
-    public function setIsValid(bool $is_valid): self
+    public function setIsValid(bool $isValid): self
     {
-        $this->is_valid = $is_valid;
+        $this->isValid = $isValid;
 
         return $this;
     }
@@ -284,36 +284,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRegisterDate(): ?\DateTimeInterface
     {
-        return $this->register_date;
+        return $this->registerDate;
     }
 
-    public function setRegisterDate(\DateTimeInterface $register_date): self
+    public function setRegisterDate(\DateTimeInterface $registerDate): self
     {
-        $this->register_date = $register_date;
+        $this->registerDate = $registerDate;
 
         return $this;
     }
 
     public function getLastUpdate(): ?\DateTimeInterface
     {
-        return $this->last_update;
+        return $this->lastUpdate;
     }
 
-    public function setLastUpdate(\DateTimeInterface $last_update): self
+    public function setLastUpdate(\DateTimeInterface $lastUpdate): self
     {
-        $this->last_update = $last_update;
+        $this->lastUpdate = $lastUpdate;
 
         return $this;
     }
 
     public function getLastConnectionDate(): ?\DateTimeInterface
     {
-        return $this->last_connection_date;
+        return $this->lastConnectionDate;
     }
 
-    public function setLastConnectionDate(?\DateTimeInterface $last_connection_date): self
+    public function setLastConnectionDate(?\DateTimeInterface $lastConnectionDate): self
     {
-        $this->last_connection_date = $last_connection_date;
+        $this->lastConnectionDate = $lastConnectionDate;
 
         return $this;
     }
@@ -399,7 +399,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->surveys->contains($survey)) {
             $this->surveys[] = $survey;
-            $survey->setUserId($this);
+            $survey->setUser($this);
         }
 
         return $this;
@@ -409,8 +409,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->surveys->removeElement($survey)) {
             // set the owning side to null (unless already changed)
-            if ($survey->getUserId() === $this) {
-                $survey->setUserId(null);
+            if ($survey->getUser() === $this) {
+                $survey->setUser(null);
             }
         }
 

@@ -7,13 +7,16 @@ use App\Repository\SurveyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SurveyRepository::class)
  */
-#[ApiResource]
+#[ApiResource(
+    denormalizationContext: ["groups" => ["survey:write"]]
+)]
 class Survey
 {
     const STATUS_WAITING = 'waiting';
@@ -30,22 +33,24 @@ class Survey
     /**
      * @ORM\Column(type="datetime")
      */
-    private $published_at;
+    private $publishedAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $closed_at;
+    private $closedAt;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      */
+    #[Groups("survey:write")]
     private $title;
 
     /**
      * @ORM\Column(type="text")
      */
+    #[Groups("survey:write")]
     private $description;
 
     /**
@@ -56,7 +61,7 @@ class Survey
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private $config_settings = [];
+    private $configSettings = [];
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -64,8 +69,9 @@ class Survey
     private $hash;
 
     /**
-     * @ORM\OneToMany(targetEntity=Question::class, mappedBy="survey", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Question::class, mappedBy="survey", orphanRemoval=true, cascade={"persist"})
      */
+    #[Groups("survey:write")]
     private $questions;
 
     /**
@@ -78,7 +84,8 @@ class Survey
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank()
      */
-    private $user_id;
+    #[Groups("survey:write")]
+    private $user;
 
     public function __construct()
     {
@@ -96,24 +103,24 @@ class Survey
 
     public function getPublishedAt(): ?\DateTimeInterface
     {
-        return $this->published_at;
+        return $this->publishedAt;
     }
 
-    public function setPublishedAt(\DateTimeInterface $published_at): self
+    public function setPublishedAt(\DateTimeInterface $publishedAt): self
     {
-        $this->published_at = $published_at;
+        $this->publishedAt = $publishedAt;
 
         return $this;
     }
 
     public function getClosedAt(): ?\DateTimeInterface
     {
-        return $this->closed_at;
+        return $this->closedAt;
     }
 
-    public function setClosedAt(?\DateTimeInterface $closed_at): self
+    public function setClosedAt(?\DateTimeInterface $closedAt): self
     {
-        $this->closed_at = $closed_at;
+        $this->closedAt = $closedAt;
 
         return $this;
     }
@@ -159,12 +166,12 @@ class Survey
 
     public function getConfigSettings(): ?array
     {
-        return $this->config_settings;
+        return $this->configSettings;
     }
 
-    public function setConfigSettings(?array $config_settings): self
+    public function setConfigSettings(?array $configSettings): self
     {
-        $this->config_settings = $config_settings;
+        $this->configSettings = $configSettings;
 
         return $this;
     }
@@ -241,14 +248,14 @@ class Survey
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUser(?User $user): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }

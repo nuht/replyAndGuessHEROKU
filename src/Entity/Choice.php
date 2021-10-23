@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ChoiceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ChoiceRepository::class)
@@ -22,7 +23,8 @@ class Choice
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $property_name;
+    #[Groups("survey:write")]
+    private $propertyName;
 
     /**
      * @ORM\ManyToOne(targetEntity=Multiple::class, inversedBy="choices")
@@ -37,12 +39,12 @@ class Choice
 
     public function getPropertyName(): ?string
     {
-        return $this->property_name;
+        return $this->propertyName;
     }
 
-    public function setPropertyName(string $property_name): self
+    public function setPropertyName(string $propertyName): self
     {
-        $this->property_name = $property_name;
+        $this->propertyName = $propertyName;
 
         return $this;
     }

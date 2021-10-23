@@ -22,7 +22,7 @@ class Result
     /**
      * @ORM\Column(type="datetime")
      */
-    private $answer_date;
+    private $answerDate;
 
     /**
      * @ORM\Column(type="json", nullable=true)
@@ -32,7 +32,7 @@ class Result
     /**
      * @ORM\Column(type="json", nullable=true)
      */
-    private $value_predict = [];
+    private $valuePredict = [];
 
     /**
      * @ORM\ManyToOne(targetEntity=Survey::class, inversedBy="results")
@@ -44,7 +44,7 @@ class Result
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="results")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user_id;
+    private $user;
 
     public function __construct()
     {
@@ -58,12 +58,12 @@ class Result
 
     public function getAnswerDate(): ?\DateTimeInterface
     {
-        return $this->answer_date;
+        return $this->answerDate;
     }
 
-    public function setAnswerDate(\DateTimeInterface $answer_date): self
+    public function setAnswerDate(\DateTimeInterface $answerDate): self
     {
-        $this->answer_date = $answer_date;
+        $this->answerDate = $answerDate;
 
         return $this;
     }
@@ -82,12 +82,12 @@ class Result
 
     public function getValuePredict(): ?array
     {
-        return $this->value_predict;
+        return $this->valuePredict;
     }
 
-    public function setValuePredict(?array $value_predict): self
+    public function setValuePredict(?array $valuePredict): self
     {
-        $this->value_predict = $value_predict;
+        $this->valuePredict = $valuePredict;
 
         return $this;
     }
@@ -106,12 +106,12 @@ class Result
 
     public function getUserId(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUserId(?User $user): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }
