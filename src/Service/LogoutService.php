@@ -26,6 +26,7 @@ class LogoutService {
         }
 
         $response = new Response();
+        $response->setStatusCode(204);
 
         $response->headers->setCookie(
             new Cookie(

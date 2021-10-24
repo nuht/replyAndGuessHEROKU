@@ -16,7 +16,3 @@ api_logout:
 api_me:
   path: /api/me
   controller: App\Controller\ApiController::me
-
-api_create_survey:
-  path: /api/create_survey
-  controller: App\Controller\ApiController::createSurvey

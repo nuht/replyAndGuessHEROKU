@@ -1,4 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
+Login.propTypes = {
+    history: PropTypes.object
+};
 
 export function Login(props)
 {
@@ -26,7 +30,9 @@ export function Login(props)
             }
             if(response.status === 204)
             {
+                localStorage.setItem('logged_in', true);
                 props.history.push("/");
+                window.dispatchEvent(new Event('addItem'));
             }
 
         }).catch(error => {

@@ -4,7 +4,7 @@ import{Redirect} from "react-router-dom";
 export function ProtegerPage(props) {
 
     function utilisateurEstIlConnecte() {
-        return false;
+        return localStorage.getItem('logged_in');
     };
 
     if (utilisateurEstIlConnecte()) {
