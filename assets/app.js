@@ -28,9 +28,42 @@ import {ProtegerPage} from "./components/ProtegerPage";
 * S'il est connecté , bouton logout à la place du bouton connexion
 * */
 function App() {
+    const [roles, setRoles] = React.useState([]);
+    React.useEffect(()=> {
+        if(localStorage.getItem('logged_in') === 'true')
+        {
+            getAndSetUserRoles();
+        }
+    },[]);
+
+    function getAndSetUserRoles() {
+        fetch(`${process.env.API_URL}/api/me`).then((response) => {
+            return response.json();
+        }).then(body => {
+            setRoles(body.jwt.roles);
+        });
+    }
+
+    function handleAddItem() {
+        const isLoggedIn = localStorage.getItem('logged_in');
+
+
+        if(isLoggedIn)
+        {
+            getAndSetUserRoles();
+        }
+    }
+
+    React.useEffect(() => {
+        window.addEventListener('addItem', handleAddItem);
+        return () => {
+            window.removeEventListener('addItem', handleAddItem);
+        };
+    }, []);
+
     return (
         <React.Fragment>
-            <Navigation/>
+            <Navigation roles = {roles} />
             <Switch>
                 <Route path='/' exact>
                     <ProtegerPage>

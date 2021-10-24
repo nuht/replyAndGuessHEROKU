@@ -1,10 +1,15 @@
 import {Link, useLocation} from "react-router-dom";
 import React from "react";
 import "./style.css"
+import PropTypes from "prop-types";
+Navigation.propTypes = {
+    roles: PropTypes.arrayOf(PropTypes.string)
+};
 
+/* @Todo Refactorer le composant navigation afin qu'il gère l'affichage simplement en se basant sur une props isLoggedIn  */
 
-
-export function Navigation() {
+export function Navigation(props) {
+    const userHasCompanyRole = props.roles.includes('ROLE_COMPANY');
     const [isLoggedIn, setIsLoggedIn] = React.useState(localStorage.getItem('logged_in'));
     const location = useLocation();
 
@@ -39,7 +44,7 @@ export function Navigation() {
     }, []);
 
     function handleLogoutUser(event) {
-        fetch('http://127.0.0.1:8000/logout').then((response) => {
+        fetch(`${process.env.API_URL}/logout`).then((response) => {
             if(response.status === 204)
             {
                 localStorage.removeItem('logged_in');
@@ -50,6 +55,20 @@ export function Navigation() {
 
     return <nav>
         <ul>
+            {
+                userHasCompanyRole && (
+                    <li>
+                        <Link className={location.pathname === '/' ? 'active' : ''} to="/">Je suis un usercompany</Link>
+                    </li>
+                )
+            }
+            {
+                !userHasCompanyRole && (
+                    <li>
+                        <Link className={location.pathname === '/' ? 'active' : ''} to="/">Je ne suis pas un usercompany</Link>
+                    </li>
+                )
+            }
             <li>
                 <Link className={location.pathname === '/' ? 'active' : ''} to="/">Home</Link>
             </li>

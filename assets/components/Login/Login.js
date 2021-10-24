@@ -14,7 +14,7 @@ export function Login(props)
         event.preventDefault();
         console.log(passwordRef.current.value);
 
-        fetch('http://127.0.0.1:8000/api/login', {
+        fetch(`${process.env.API_URL}/api/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -30,7 +30,7 @@ export function Login(props)
             }
             if(response.status === 204)
             {
-                localStorage.setItem('logged_in', true);
+                localStorage.setItem('logged_in', 'true');
                 props.history.push("/");
                 window.dispatchEvent(new Event('addItem'));
             }
