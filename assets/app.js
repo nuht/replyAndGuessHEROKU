@@ -19,6 +19,7 @@ import {Navigation} from "./components/Navigation/Navigation";
 import {Register} from "./components/Register";
 import {Login} from "./components/Login/Login";
 import {ProtegerPage} from "./components/ProtegerPage";
+import {CreateSurvey} from "./components/Company/CreateSurvey";
 
 /*
 * Liste :
@@ -69,6 +70,9 @@ function App() {
                     <ProtegerPage>
                         <Home/>
                     </ProtegerPage>
+                </Route>
+                <Route path='/company/createSurvey'>
+                    <CreateSurvey/>
                 </Route>
                 <Route
                     path='/login'

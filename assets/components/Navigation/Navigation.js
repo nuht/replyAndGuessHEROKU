@@ -58,7 +58,7 @@ export function Navigation(props) {
             {
                 userHasCompanyRole && (
                     <li>
-                        <Link className={location.pathname === '/' ? 'active' : ''} to="/">Je suis un usercompany</Link>
+                        <Link className={location.pathname === '/company/createSurvey' ? 'active' : ''} to="/company/createSurvey">Créer un sondage</Link>
                     </li>
                 )
             }
