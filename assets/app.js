@@ -31,6 +31,7 @@ import {Container} from "@mui/material";
 * */
 function App() {
     const [roles, setRoles] = React.useState([]);
+    const [id, setId] = React.useState(null);
     React.useEffect(()=> {
         if(localStorage.getItem('logged_in') === 'true')
         {
@@ -43,6 +44,7 @@ function App() {
             return response.json();
         }).then(body => {
             setRoles(body.jwt.roles);
+            setId(body.user.id);
         });
     }
 
@@ -75,7 +77,7 @@ function App() {
                         </ProtegerPage>
                     </Route>
                     <Route path='/company/createSurvey'>
-                        <CreateSurvey/>
+                        <CreateSurvey id = {id}/>
                     </Route>
                     <Route
                         path='/login'

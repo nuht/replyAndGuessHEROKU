@@ -1,7 +1,11 @@
 import React from 'react';
 import {Button, Stack, TextareaAutosize, TextField} from "@mui/material";
+import PropTypes from "prop-types";
+CreateSurvey.propTypes = {
+    id: PropTypes.number
+};
 
-export function CreateSurvey() {
+export function CreateSurvey(props) {
     let titleRef = React.useRef(null);
     let descriptionRef = React.useRef(null);
     const[info, setInfo] = React.useState("");
@@ -17,7 +21,7 @@ export function CreateSurvey() {
             body: JSON.stringify({
                 "title": titleRef.current.value,
                 "description": descriptionRef.current.value,
-                "user": "api/users/120"
+                "user": "api/users/" + props.id
             })
         }).then(response => {
             if(response.status === 201)
@@ -32,7 +36,7 @@ export function CreateSurvey() {
         <h1>Créer un sondage</h1>
         <form onSubmit={handleOnSubmit}>
             <Stack spacing={2}>
-                <TextField ref={titleRef} id="outlined-basic" label="Entrez un titre :" variant="outlined" />
+                <TextField inputRef={titleRef} id="outlined-basic" label="Entrez un titre :" variant="outlined" />
                 <TextareaAutosize
                     aria-label="empty textarea"
                     maxRows="10"
