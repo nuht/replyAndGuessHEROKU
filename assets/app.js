@@ -20,6 +20,7 @@ import {Register} from "./components/Register";
 import {Login} from "./components/Login/Login";
 import {ProtegerPage} from "./components/ProtegerPage";
 import {CreateSurvey} from "./components/Company/CreateSurvey";
+import {Container} from "@mui/material";
 
 /*
 * Liste :
@@ -63,38 +64,41 @@ function App() {
     }, []);
 
     return (
-        <React.Fragment>
+
+        <>
             <Navigation roles = {roles} />
-            <Switch>
-                <Route path='/' exact>
-                    <ProtegerPage>
-                        <Home/>
-                    </ProtegerPage>
-                </Route>
-                <Route path='/company/createSurvey'>
-                    <CreateSurvey/>
-                </Route>
-                <Route
-                    path='/login'
-                    exact
-                    render={(routeProps) => {
-                        return <Login
-                            {...routeProps}
-                        />
-                    }}
-                >
-                </Route>
-                <Route path='/questions'>
-                    <h1>Liste des questions</h1>
-                </Route>
-                <Route path='/ranking'>
-                    <h1>Classements</h1>
-                </Route>
-                <Route path='/register'>
-                    <Register/>
-                </Route>
-            </Switch>
-        </React.Fragment>
+            <Container maxWidth="md">
+                <Switch>
+                    <Route path='/' exact>
+                        <ProtegerPage>
+                            <Home/>
+                        </ProtegerPage>
+                    </Route>
+                    <Route path='/company/createSurvey'>
+                        <CreateSurvey/>
+                    </Route>
+                    <Route
+                        path='/login'
+                        exact
+                        render={(routeProps) => {
+                            return <Login
+                                {...routeProps}
+                            />
+                        }}
+                    >
+                    </Route>
+                    <Route path='/questions'>
+                        <h1>Liste des questions</h1>
+                    </Route>
+                    <Route path='/ranking'>
+                        <h1>Classements</h1>
+                    </Route>
+                    <Route path='/register'>
+                        <Register/>
+                    </Route>
+                </Switch>
+            </Container>
+        </>
     );
 }
 

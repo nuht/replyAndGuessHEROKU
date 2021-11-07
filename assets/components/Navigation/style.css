@@ -1,22 +1,8 @@
-nav {
-}
-
-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-nav li {
-    display: inline-block;
-    margin-left: 10px;
-}
-
-nav a {
+.navbar__links {
     text-decoration: none;
     color:white;
 }
 
-nav a.active {
-    color: red;
+.navbar__links--inactive {
+    color:black;
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {Button} from "@mui/material";
 Login.propTypes = {
     history: PropTypes.object
 };
@@ -12,7 +13,6 @@ export function Login(props)
 
     function handleOnSubmit(event) {
         event.preventDefault();
-        console.log(passwordRef.current.value);
 
         fetch(`${process.env.API_URL}/api/login`, {
             method: "POST",
@@ -36,7 +36,7 @@ export function Login(props)
             }
 
         }).catch(error => {
-        })
+        });
 
     }
 
@@ -49,7 +49,7 @@ export function Login(props)
             <label htmlFor="password">Entrez votre mot de passe:</label>
             <input id="password" ref={passwordRef} type="password" name="password" placeholder="password"/>
 
-            <button type="submit">Se connecter</button>
+            <Button variant="contained" type="submit">Se connecter</Button>
         </form>
     </div>);
 }

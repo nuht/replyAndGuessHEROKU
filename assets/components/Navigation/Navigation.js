@@ -2,6 +2,8 @@ import {Link, useLocation} from "react-router-dom";
 import React from "react";
 import "./style.css"
 import PropTypes from "prop-types";
+import {Box, Button, ButtonGroup, Stack} from "@mui/material";
+import classNames from "classnames";
 Navigation.propTypes = {
     roles: PropTypes.arrayOf(PropTypes.string)
 };
@@ -53,45 +55,48 @@ export function Navigation(props) {
         });
     }
 
-    return <nav>
-        <ul>
+    const CONTAINED = "contained";
+    const OUTLINED = "outlined";
+
+    return <Stack component="nav" direction="row">
+        <ButtonGroup color="primary" fullWidth>
             {
                 userHasCompanyRole && (
-                    <li>
-                        <Link className={location.pathname === '/company/createSurvey' ? 'active' : ''} to="/company/createSurvey">Créer un sondage</Link>
-                    </li>
+                    <Button variant={location.pathname === '/company/createSurvey' ? CONTAINED : OUTLINED}>
+                        <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/company/createSurvey'})} to="/company/createSurvey">Créer un sondage</Link>
+                    </Button>
                 )
             }
             {
                 !userHasCompanyRole && (
-                    <li>
-                        <Link className={location.pathname === '/' ? 'active' : ''} to="/">Je ne suis pas un usercompany</Link>
-                    </li>
+                    <Button variant={location.pathname === '/' ? CONTAINED : OUTLINED}>
+                        <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/'})} to="/">Je ne suis pas un usercompany</Link>
+                    </Button>
                 )
             }
-            <li>
-                <Link className={location.pathname === '/' ? 'active' : ''} to="/">Home</Link>
-            </li>
-            <li>
-                <Link className={location.pathname === '/questions' ? 'active' : ''} to="/questions">Liste des questions</Link>
-            </li>
-            <li>
-                <Link className={location.pathname === '/ranking' ? 'active' : ''} to="/ranking">Classement</Link>
-            </li>
+            <Button variant={location.pathname === '/' ? CONTAINED : OUTLINED}>
+                <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/'})} to="/">Home</Link>
+            </Button>
+            <Button variant={location.pathname === '/questions' ? CONTAINED : OUTLINED}>
+                <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/questions'})}to="/questions">Liste des questions</Link>
+            </Button>
+            <Button variant={location.pathname === '/ranking' ? CONTAINED : OUTLINED}>
+                <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/ranking'})}to="/ranking">Classement</Link>
+            </Button>
             {
                 !isLoggedIn && (
-                    <li>
-                        <Link className={location.pathname === '/login' ? 'active' : ''} to="/login">Se connecter</Link>
-                    </li>
+                    <Button variant={location.pathname === '/login' ? CONTAINED : OUTLINED}>
+                        <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/login'})}to="/login">Se connecter</Link>
+                    </Button>
                 )
             }
             {
                 isLoggedIn && (
-                    <li>
-                        <button onClick={handleLogoutUser}>Se déconnecter</button>
-                    </li>
+                    <Button onClick={handleLogoutUser}>
+                        Se déconnecter
+                    </Button>
                 )
             }
-        </ul>
-    </nav>;
+        </ButtonGroup>
+    </Stack>;
 }
