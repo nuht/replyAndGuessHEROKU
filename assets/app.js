@@ -6,7 +6,7 @@
  */
 import ReactDOM from 'react-dom'
 import React from 'react'
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch, withRouter} from "react-router-dom";
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
@@ -21,6 +21,14 @@ import {Login} from "./components/Login/Login";
 import {ProtegerPage} from "./components/ProtegerPage";
 import {CreateSurvey} from "./components/Company/CreateSurvey";
 import {Container} from "@mui/material";
+import {NotFound} from "./components/NotFound";
+import {Survey} from "./components/Survey/Survey";
+import PropTypes from "prop-types";
+App.propTypes = {
+    history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired
+};
 
 /*
 * Liste :
@@ -29,7 +37,7 @@ import {Container} from "@mui/material";
 * Requête pour la liste des questions sur la home
 * S'il est connecté , bouton logout à la place du bouton connexion
 * */
-function App() {
+function App(props) {
     const [roles, setRoles] = React.useState([]);
     const [id, setId] = React.useState(null);
     React.useEffect(()=> {
@@ -41,6 +49,11 @@ function App() {
 
     function getAndSetUserRoles() {
         fetch(`${process.env.API_URL}/api/me`).then((response) => {
+            if(response.status === 401)
+            {
+                props.history.push("/login");
+            }
+
             return response.json();
         }).then(body => {
             setRoles(body.jwt.roles);
@@ -76,8 +89,24 @@ function App() {
                             <Home/>
                         </ProtegerPage>
                     </Route>
-                    <Route path='/company/createSurvey'>
-                        <CreateSurvey id = {id}/>
+                    <Route
+                        path='/company/createSurvey'
+                        render={(routeProps) => {
+                            return <CreateSurvey
+                                {...routeProps}
+                                id = {id}
+                            />
+                        }}
+                    >
+                    </Route>
+                    <Route
+                        path="/survey/:id"
+                        render={(routeProps) => {
+                            return <Survey
+                                {...routeProps}
+                            />
+                        }}
+                    >
                     </Route>
                     <Route
                         path='/login'
@@ -98,10 +127,13 @@ function App() {
                     <Route path='/register'>
                         <Register/>
                     </Route>
+                    <Route path='/*'>
+                        <NotFound/>
+                    </Route>
                 </Switch>
             </Container>
         </>
     );
 }
-
-ReactDOM.render(<Router><App/></Router>, document.getElementById('root'));
+const AppWithRouteProps = withRouter(App);
+ReactDOM.render(<Router><AppWithRouteProps/></Router>, document.getElementById('root'));

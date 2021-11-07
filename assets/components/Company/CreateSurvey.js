@@ -2,7 +2,10 @@ import React from 'react';
 import {Button, Stack, TextareaAutosize, TextField} from "@mui/material";
 import PropTypes from "prop-types";
 CreateSurvey.propTypes = {
-    id: PropTypes.number
+    id: PropTypes.number,
+    history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired
 };
 
 export function CreateSurvey(props) {
@@ -26,8 +29,10 @@ export function CreateSurvey(props) {
         }).then(response => {
             if(response.status === 201)
             {
-                setInfo('Le sondage a été crée');
+                return response.json();
             } else setInfo("Le sondage n'a pas été crée erreur " + response.status)
+        }).then(body => {
+            props.history.push("/survey/" + body.id);
         }).catch(error => {});
     }
 

@@ -2,7 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import {Button} from "@mui/material";
 Login.propTypes = {
-    history: PropTypes.object
+    history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired
 };
 
 export function Login(props)
