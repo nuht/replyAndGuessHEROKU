@@ -77,8 +77,8 @@ export function Navigation(props) {
             <Button variant={location.pathname === '/' ? CONTAINED : OUTLINED}>
                 <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/'})} to="/">Home</Link>
             </Button>
-            <Button variant={location.pathname === '/questions' ? CONTAINED : OUTLINED}>
-                <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/questions'})}to="/questions">Liste des questions</Link>
+            <Button variant={location.pathname === '/surveys' ? CONTAINED : OUTLINED}>
+                <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/surveys'})}to="/surveys">Mes sondages</Link>
             </Button>
             <Button variant={location.pathname === '/ranking' ? CONTAINED : OUTLINED}>
                 <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/ranking'})}to="/ranking">Classement</Link>
