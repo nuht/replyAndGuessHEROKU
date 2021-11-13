@@ -58,7 +58,6 @@ class AppFixtures extends Fixture implements FixtureInterface
         $company = $manager->getRepository(Company::class)->findBy(['name' => 'Food truck Argentin']);
 
         $userAdmin = new User();
-        $userAdmin->setCompany($company[0]);
         $userAdmin->setEmail('admin@admin.fr');
         $password = $this->passwordHasher->hashPassword($userAdmin, 'admin');
         $userAdmin->setPassword($password);
@@ -71,6 +70,7 @@ class AppFixtures extends Fixture implements FixtureInterface
         $manager->flush();
 
         $survey = new Survey();
+        $survey->setCompany($company[0]);
         $survey->setTitle('Etude de marché food truck Argentin');
         $survey->setDescription("Bonjour,
 
@@ -80,7 +80,6 @@ Vos réponses ne seront traitées qu’à des fins statistiques et ce de manièr
 
 Merci d’avance pour votre aide.");
 
-        $survey->setUser($userAdmin);
         $manager->persist($survey);
         $manager->flush();
 

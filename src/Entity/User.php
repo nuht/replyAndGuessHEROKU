@@ -119,15 +119,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $results;
 
     /**
+     * @ORM\OneToMany(targetEntity=Survey::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $surveys;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Company::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
      */
     private $company;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Survey::class, mappedBy="user", orphanRemoval=true)
-     */
-    private $surveys;
 
 
     public function __construct()
@@ -375,45 +375,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCompany(): ?Company
+
+
+    /**
+     * @return mixed
+     */
+    public function getCompany()
     {
         return $this->company;
     }
 
-    public function setCompany(?Company $company): self
+    /**
+     * @param mixed $company
+     */
+    public function setCompany($company): void
     {
         $this->company = $company;
-
-        return $this;
     }
 
     /**
-     * @return Collection|Survey[]
+     * @return ArrayCollection
      */
-    public function getSurveys(): Collection
+    public function getSurveys(): ArrayCollection
     {
         return $this->surveys;
     }
 
-    public function addSurvey(Survey $survey): self
+    /**
+     * @param ArrayCollection $surveys
+     */
+    public function setSurveys(ArrayCollection $surveys): void
     {
-        if (!$this->surveys->contains($survey)) {
-            $this->surveys[] = $survey;
-            $survey->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSurvey(Survey $survey): self
-    {
-        if ($this->surveys->removeElement($survey)) {
-            // set the owning side to null (unless already changed)
-            if ($survey->getUser() === $this) {
-                $survey->setUser(null);
-            }
-        }
-
-        return $this;
+        $this->surveys = $surveys;
     }
 }

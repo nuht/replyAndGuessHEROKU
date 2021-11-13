@@ -9,8 +9,8 @@ Login.propTypes = {
 
 export function Login(props)
 {
-    let emailInputRef = React.useRef(null);
-    let passwordRef = React.useRef(null);
+    const emailInputRef = React.useRef(null);
+    const passwordRef = React.useRef(null);
     const[error, setError] = React.useState(false);
 
     function handleOnSubmit(event) {

@@ -24,6 +24,9 @@ import {Container} from "@mui/material";
 import {NotFound} from "./components/NotFound";
 import {Survey} from "./components/Survey/Survey";
 import PropTypes from "prop-types";
+import {SurveyList} from "./components/SurveyList/SurveyList";
+import {SurveyEdit} from "./components/Survey/SurveyEdit";
+
 App.propTypes = {
     history: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
@@ -109,6 +112,15 @@ function App(props) {
                     >
                     </Route>
                     <Route
+                        path="/edit/survey/:id"
+                        render={(routeProps) => {
+                            return <SurveyEdit
+                                {...routeProps}
+                            />
+                        }}
+                    >
+                    </Route>
+                    <Route
                         path='/login'
                         exact
                         render={(routeProps) => {
@@ -118,9 +130,16 @@ function App(props) {
                         }}
                     >
                     </Route>
-                    <Route path='/questions'>
-                        <h1>Liste des questions</h1>
+                    <Route
+                        path='/surveys'
+                        render={(routeProps) => {
+                            return <SurveyList
+                                {...routeProps}
+                            />
+                        }}
+                    >
                     </Route>
+
                     <Route path='/ranking'>
                         <h1>Classements</h1>
                     </Route>

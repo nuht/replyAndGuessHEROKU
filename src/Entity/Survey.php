@@ -80,12 +80,11 @@ class Survey
     private $results;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="surveys")
+     * @ORM\ManyToOne(targetEntity=Company::class, inversedBy="surveys")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank()
      */
     #[Groups("survey:write")]
-    private $user;
+    private $company;
 
     public function __construct()
     {
@@ -248,14 +247,14 @@ class Survey
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getCompany(): ?Company
     {
-        return $this->user;
+        return $this->company;
     }
 
-    public function setUser(?User $user): self
+    public function setCompany(?Company $company): self
     {
-        $this->user = $user;
+        $this->company = $company;
 
         return $this;
     }

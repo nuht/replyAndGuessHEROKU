@@ -1,10 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {SurveyStatus} from "../SurveyStatus";
+
 Survey.propTypes = {
     history: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired
 };
+
 export function Survey(props) {
     const [survey, setSurvey] = React.useState(null);
     React.useEffect(()=> {
@@ -18,7 +21,6 @@ export function Survey(props) {
                 alert('Sondage introuvable');
             }
 
-
             return response.json();
         }).then(body => {
             console.log(body);
@@ -30,24 +32,14 @@ export function Survey(props) {
         });
     },[]);
 
-    function getStatusColor(status) {
-        if(status === 'waiting')
-        {
-            return 'yellow';
-        }
-        return 'black';
-    }
+
 
     return (
         <div>
             <h1>Survey : {props.match.params.id}</h1>
             {survey !== null && <div>
-                <p>{survey.title}</p> <div style={{
-                    width: '15px',
-                    height: '15px',
-                    borderRadius: '50%',
-                    backgroundColor: getStatusColor(survey.status)
-            }}></div>
+                <p>{survey.title}</p>
+                <SurveyStatus status={survey.status} />
                 <p>{survey.description}</p>
                 <p>{survey.status}</p>
             </div>}

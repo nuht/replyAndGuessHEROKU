@@ -32,7 +32,7 @@ export function CreateSurvey(props) {
                 return response.json();
             } else setInfo("Le sondage n'a pas été crée erreur " + response.status)
         }).then(body => {
-            props.history.push("/survey/" + body.id);
+            props.history.push("edit/survey/" + body.id);
         }).catch(error => {});
     }
 

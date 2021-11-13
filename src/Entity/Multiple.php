@@ -15,6 +15,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource]
 class Multiple
 {
+    const TYPE_RADIO = 'radio';
+    const TYPE_CHECKBOXES = 'checkboxes';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -32,6 +35,11 @@ class Multiple
      * @ORM\OneToOne(targetEntity=Question::class, mappedBy="multiple", cascade={"persist", "remove"})
      */
     private $question;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $type;
 
     public function __construct()
     {
@@ -91,6 +99,21 @@ class Multiple
         }
 
         $this->question = $question;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        if (!in_array($type, [self::TYPE_CHECKBOXES, self::TYPE_RADIO])) {
+            throw new \InvalidArgumentException("Invalid status");
+        }
+        $this->type = $type;
 
         return $this;
     }
