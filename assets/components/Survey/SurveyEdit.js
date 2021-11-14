@@ -1,33 +1,20 @@
 import PropTypes from "prop-types";
 import React from "react";
-import {SurveyStatus} from "../SurveyStatus";
 import {Button} from "@mui/material";
 
-export function SurveyEdit(props) {
+SurveyEdit.propTypes = {
+    survey: PropTypes.shape({
+        id:PropTypes.number,
+        status:PropTypes.string,
+        title:PropTypes.string,
+        description:PropTypes.string
+    }).isRequired
+};
 
+export function SurveyEdit(props) {
+    const {survey} = props;
     const titleInputRef = React.useRef(null);
     const descriptionInputRef = React.useRef(null);
-    const [survey, setSurvey] = React.useState(null);
-    React.useEffect(()=> {
-        fetch(`${process.env.API_URL}/api/surveys/` + props.match.params.id).then((response) => {
-            if(response.status === 401)
-            {
-                props.history.push("/login");
-            }
-            if(response.status === 404)
-            {
-                alert('Sondage introuvable');
-            }
-
-            return response.json();
-        }).then(body => {
-            setSurvey({
-                title: body.title,
-                description: body.description,
-                status: body.status
-            });
-        });
-    },[]);
 
     React.useEffect(() => {
         if(survey !== null) {
@@ -51,23 +38,15 @@ export function SurveyEdit(props) {
 
     return (
         <div>
-            <h1>Survey : {props.match.params.id} {survey !== null && <SurveyStatus status={survey.status} />}</h1>
-            {survey !== null && <form onSubmit={handleOnSubmit}>
+            <form onSubmit={handleOnSubmit}>
                 <label htmlFor="title">Titre :</label>
                 <input ref={titleInputRef} id="title" type="text" name="title"/>
 
                 <label htmlFor="description">Description :</label>
-                <input ref={descriptionInputRef}id="description" type="text" name="description"/>
+                <input ref={descriptionInputRef} id="description" type="text" name="description"/>
 
                 <Button variant="contained" type="submit">Sauvegarder</Button>
-            </form>}
+            </form>
         </div>
     )
 }
-
-SurveyEdit.propTypes = {
-    match: PropTypes.any,
-    location: PropTypes.any,
-    history: PropTypes.any,
-    staticContext: PropTypes.any
-};
