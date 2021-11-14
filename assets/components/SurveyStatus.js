@@ -16,4 +16,5 @@ export const SurveyStatus = styled.div`
     height: 15px;
     border-radius: 50%;
     background-color: ${props => getStatusColor(props.status)};
+    display: inline-block;
 `;

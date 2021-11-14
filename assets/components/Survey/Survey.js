@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import {SurveyEdit} from "./SurveyEdit";
 import {Button} from "@mui/material";
+import {SurveyStatus} from "../SurveyStatus";
+
 Survey.propTypes = {
     history: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
@@ -33,14 +35,6 @@ export function Survey(props) {
         });
     },[]);
 
-    function getStatusColor(status) {
-        if(status === 'waiting')
-        {
-            return 'yellow';
-        }
-        return 'black';
-    }
-
     if(survey === null)
     {
         return <h1>Loading...</h1>
@@ -49,17 +43,11 @@ export function Survey(props) {
     return (
         <div>
             <Button onClick={() => setModeEdition(!modeEdition)}>{modeEdition ? "Sortir du mode édition" : "Editer"}</Button>
-            <h1>Survey : {props.match.params.id}</h1>
+            <h1>Survey : {props.match.params.id}<SurveyStatus status={survey.status}/></h1>
             {modeEdition ? <SurveyEdit survey={survey}/> : (
                 <div>
-                    <p>{survey.title}</p> <div style={{
-                        width: '15px',
-                        height: '15px',
-                        borderRadius: '50%',
-                        backgroundColor: getStatusColor(survey.status)
-                    }}/>
+                    <p>{survey.title}</p>
                     <p>{survey.description}</p>
-                    <p>{survey.status}</p>
                 </div>
             )}
         </div>
