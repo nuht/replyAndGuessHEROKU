@@ -1,4 +1,4 @@
-import {useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import React from "react";
 import {NavbarLinks} from "./style";
 import PropTypes from "prop-types";
@@ -58,30 +58,46 @@ export function Navigation(props) {
             {
                 userHasCompanyRole && (
                     <Button variant={location.pathname === '/company/createSurvey' ? CONTAINED : OUTLINED}>
-                        <NavbarLinks active={location.pathname === '/company/createSurvey'} to="/company/createSurvey">Créer un sondage</NavbarLinks>
+                        <NavbarLinks active={location.pathname === '/company/createSurvey'}>
+                            <Link to="/company/createSurvey">Créer un sondage</Link>
+                        </NavbarLinks>
                     </Button>
                 )
             }
             {
                 !userHasCompanyRole && (
                     <Button variant={location.pathname === '/' ? CONTAINED : OUTLINED}>
-                        <NavbarLinks active={location.pathname === '/'} to="/">Je ne suis pas un usercompany</NavbarLinks>
+                        <NavbarLinks active={location.pathname === '/'}>
+                            <Link to="/">Je ne suis pas un usercompany</Link>
+                        </NavbarLinks>
                     </Button>
                 )
             }
             <Button variant={location.pathname === '/' ? CONTAINED : OUTLINED}>
-                <NavbarLinks active={location.pathname === '/'} to="/">Home</NavbarLinks>
+                <NavbarLinks active={location.pathname === '/'}>
+                    <Link to="/">Home</Link>
+                </NavbarLinks>
+
             </Button>
             <Button variant={location.pathname === '/surveys' ? CONTAINED : OUTLINED}>
-                <NavbarLinks active={location.pathname === '/surveys'} to="/surveys">Mes sondages</NavbarLinks>
+                <NavbarLinks active={location.pathname === '/surveys'}>
+                    <Link to="/surveys">Mes sondages</Link>
+                </NavbarLinks>
+
             </Button>
             <Button variant={location.pathname === '/ranking' ? CONTAINED : OUTLINED}>
-                <NavbarLinks active={location.pathname === '/ranking'} to="/ranking">Classement</NavbarLinks>
+                <NavbarLinks active={location.pathname === '/ranking'}>
+                    <Link to="/ranking">Classement</Link>
+                </NavbarLinks>
+
             </Button>
             {
                 !isLoggedIn && (
                     <Button variant={location.pathname === '/login' ? CONTAINED : OUTLINED}>
-                        <NavbarLinks active={location.pathname === '/login'} to="/login">Se connecter</NavbarLinks>
+                        <NavbarLinks active={location.pathname === '/login'}>
+                            <Link to="/login">Se connecter</Link>
+                        </NavbarLinks>
+
                     </Button>
                 )
             }

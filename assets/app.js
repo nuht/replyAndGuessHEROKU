@@ -8,8 +8,8 @@ import ReactDOM from 'react-dom'
 import React from 'react'
 import {BrowserRouter as Router, Route, Switch, withRouter} from "react-router-dom";
 
-// any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.css';
+// any CSS you import will output into a single css file (toto in this case)
+import './main.css';
 
 // start the Stimulus application
 import './bootstrap';
@@ -23,19 +23,13 @@ import {NotFound} from "./components/NotFound";
 import {Survey} from "./components/Survey/Survey";
 import PropTypes from "prop-types";
 import {SurveyList} from "./components/SurveyList/SurveyList";
+
 App.propTypes = {
     history: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired
 };
 
-/*
-* Liste :
-* Bouton de redirection vers connexion
-* Bouton de redirection vers inscription
-* Requête pour la liste des questions sur la home
-* S'il est connecté , bouton logout à la place du bouton connexion
-* */
 function App(props) {
     const [roles, setRoles] = React.useState([]);
     const [id, setId] = React.useState(null);

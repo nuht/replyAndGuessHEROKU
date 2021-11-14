@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 SurveyCard.propTypes = {
     survey: PropTypes.shape({
-        id:PropTypes.string,
+        id:PropTypes.number,
         status:PropTypes.string,
         title:PropTypes.string,
     }).isRequired,
