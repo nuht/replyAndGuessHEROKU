@@ -1,9 +1,9 @@
-import {Link, useLocation} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import React from "react";
-import "./style.css"
+import {NavbarLinks} from "./style";
 import PropTypes from "prop-types";
-import {Box, Button, ButtonGroup, Stack} from "@mui/material";
-import classNames from "classnames";
+import {Button, ButtonGroup, Stack} from "@mui/material";
+
 Navigation.propTypes = {
     roles: PropTypes.arrayOf(PropTypes.string)
 };
@@ -15,7 +15,7 @@ export function Navigation(props) {
     const [isLoggedIn, setIsLoggedIn] = React.useState(localStorage.getItem('logged_in'));
     const location = useLocation();
 
-    function handleAddItem(event) {
+    function handleAddItem() {
         const loggedIn = localStorage.getItem('logged_in');
         if(loggedIn !== null)
         {
@@ -23,7 +23,7 @@ export function Navigation(props) {
         }
     }
 
-    function handleRemoveItem(event) {
+    function handleRemoveItem() {
         const loggedIn = localStorage.getItem('logged_in');
         if(!loggedIn)
         {
@@ -33,19 +33,14 @@ export function Navigation(props) {
 
     React.useEffect(() => {
         window.addEventListener('addItem', handleAddItem);
-        return () => {
-            window.removeEventListener('addItem', handleAddItem);
-        };
-    }, []);
-
-    React.useEffect(() => {
         window.addEventListener('removeItem', handleRemoveItem);
         return () => {
+            window.removeEventListener('addItem', handleAddItem);
             window.removeEventListener('removeItem', handleRemoveItem);
         };
     }, []);
 
-    function handleLogoutUser(event) {
+    function handleLogoutUser() {
         fetch(`${process.env.API_URL}/logout`).then((response) => {
             if(response.status === 204)
             {
@@ -63,30 +58,30 @@ export function Navigation(props) {
             {
                 userHasCompanyRole && (
                     <Button variant={location.pathname === '/company/createSurvey' ? CONTAINED : OUTLINED}>
-                        <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/company/createSurvey'})} to="/company/createSurvey">Créer un sondage</Link>
+                        <NavbarLinks active={location.pathname === '/company/createSurvey'} to="/company/createSurvey">Créer un sondage</NavbarLinks>
                     </Button>
                 )
             }
             {
                 !userHasCompanyRole && (
                     <Button variant={location.pathname === '/' ? CONTAINED : OUTLINED}>
-                        <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/'})} to="/">Je ne suis pas un usercompany</Link>
+                        <NavbarLinks active={location.pathname === '/'} to="/">Je ne suis pas un usercompany</NavbarLinks>
                     </Button>
                 )
             }
             <Button variant={location.pathname === '/' ? CONTAINED : OUTLINED}>
-                <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/'})} to="/">Home</Link>
+                <NavbarLinks active={location.pathname === '/'} to="/">Home</NavbarLinks>
             </Button>
             <Button variant={location.pathname === '/surveys' ? CONTAINED : OUTLINED}>
-                <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/surveys'})}to="/surveys">Mes sondages</Link>
+                <NavbarLinks active={location.pathname === '/surveys'} to="/surveys">Mes sondages</NavbarLinks>
             </Button>
             <Button variant={location.pathname === '/ranking' ? CONTAINED : OUTLINED}>
-                <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/ranking'})}to="/ranking">Classement</Link>
+                <NavbarLinks active={location.pathname === '/ranking'} to="/ranking">Classement</NavbarLinks>
             </Button>
             {
                 !isLoggedIn && (
                     <Button variant={location.pathname === '/login' ? CONTAINED : OUTLINED}>
-                        <Link className={classNames('navbar__links', {'navbar__links--inactive' : location.pathname !== '/login'})}to="/login">Se connecter</Link>
+                        <NavbarLinks active={location.pathname === '/login'} to="/login">Se connecter</NavbarLinks>
                     </Button>
                 )
             }
