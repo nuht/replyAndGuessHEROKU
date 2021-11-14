@@ -14,11 +14,9 @@ import './styles/app.css';
 // start the Stimulus application
 import './bootstrap';
 import 'normalize-css';
-import {Home} from "./components/Home";
 import {Navigation} from "./components/Navigation/Navigation";
 import {Register} from "./components/Register";
 import {Login} from "./components/Login/Login";
-import {ProtegerPage} from "./components/ProtegerPage";
 import {CreateSurvey} from "./components/Company/CreateSurvey";
 import {Container} from "@mui/material";
 import {NotFound} from "./components/NotFound";
@@ -85,10 +83,15 @@ function App(props) {
             <Navigation roles = {roles} />
             <Container maxWidth="md">
                 <Switch>
-                    <Route path='/' exact>
-                        <ProtegerPage>
-                            <Home/>
-                        </ProtegerPage>
+                    <Route
+                        path={['/', '/surveys']} exact
+                        render={(routeProps) => {
+                            return (
+                                <SurveyList
+                                {...routeProps}
+                            />)
+                        }}
+                    >
                     </Route>
                     <Route
                         path='/company/createSurvey'
@@ -104,15 +107,6 @@ function App(props) {
                         path="/survey/:id"
                         render={(routeProps) => {
                             return <Survey
-                                {...routeProps}
-                            />
-                        }}
-                    >
-                    </Route>
-                    <Route
-                        path='/surveys'
-                        render={(routeProps) => {
-                            return <SurveyList
                                 {...routeProps}
                             />
                         }}
