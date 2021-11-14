@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {SurveyEdit} from "./SurveyEdit";
-import {Button} from "@mui/material";
+import {Button, CircularProgress} from "@mui/material";
 import {SurveyStatus} from "../SurveyStatus";
 
 Survey.propTypes = {
@@ -37,7 +37,7 @@ export function Survey(props) {
 
     if(survey === null)
     {
-        return <h1>Loading...</h1>
+        return <CircularProgress />
     }
 
     return (
