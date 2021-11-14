@@ -1,26 +1,19 @@
 import React from "react";
-import PropTypes from "prop-types";
+import styled from "styled-components";
 
-SurveyStatus.propTypes = {
-    status: PropTypes.string
-}
-
-export function SurveyStatus(props) {
-
-    function getStatusColor(status) {
-        if (status === 'waiting') {
-            return 'yellow';
-        }
-        if (status === 'opened') {
-            return 'green';
-        }
-        return 'black';
+function getStatusColor(status) {
+    if (status === 'waiting') {
+        return 'yellow';
     }
-
-    return <div style={{
-        width: '15px',
-        height: '15px',
-        borderRadius: '50%',
-        backgroundColor: getStatusColor(props.status)
-    }}></div>
+    if (status === 'opened') {
+        return 'green';
+    }
+    return 'black';
 }
+
+export const SurveyStatus = styled.div`
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: ${props => getStatusColor(props.status)};
+`;
