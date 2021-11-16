@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20211116101612 extends AbstractMigration
+final class Version20211116103232 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -26,7 +26,7 @@ final class Version20211116101612 extends AbstractMigration
         $this->addSql('CREATE TABLE choice (id INT NOT NULL, multiple_id INT NOT NULL, property_name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_C1AB5A92AEDC4C7D ON choice (multiple_id)');
         $this->addSql('CREATE TABLE company (id INT NOT NULL, name VARCHAR(255) NOT NULL, picture BYTEA DEFAULT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE multiple (id INT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE multiple (id INT NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE question (id INT NOT NULL, multiple_id INT DEFAULT NULL, text_area_id INT DEFAULT NULL, survey_id INT NOT NULL, text TEXT NOT NULL, is_required BOOLEAN DEFAULT \'false\' NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_B6F7494EAEDC4C7D ON question (multiple_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_B6F7494E99AE6FA3 ON question (text_area_id)');

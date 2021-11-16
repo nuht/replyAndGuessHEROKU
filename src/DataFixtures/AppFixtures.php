@@ -253,6 +253,7 @@ Merci d’avance pour votre aide.");
             $questionElement->setSurvey($survey);
             if($question['question_type'] === 'multiple') {
                 $element = new Multiple();
+                $element->setType($question['type']);
                 $questionElement->setMultiple($element);
                 foreach ($question['choice'] as $choice) {
                     $choiceElement = new Choice();
