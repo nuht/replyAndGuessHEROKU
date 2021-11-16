@@ -10,7 +10,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=QuestionRepository::class)
  */
-#[ApiResource]
 class Question
 {
     /**
@@ -18,31 +17,31 @@ class Question
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups("survey:read")]
     private $id;
 
     /**
      * @ORM\Column(type="text")
      */
-    #[Groups("survey:write")]
+    #[Groups(["survey:write", "survey:read"])]
     private $text;
 
     /**
      * @ORM\Column(type="boolean", options={"default" : false})
      */
-    #[Groups("survey:write")]
+    #[Groups(["survey:write", "survey:read"])]
     private $isRequired;
 
     /**
      * @ORM\OneToOne(targetEntity=Multiple::class, inversedBy="question", cascade={"persist", "remove"})
      */
-    #[Groups("survey:write")]
-    /*RELIER DIRECTEMENT A CHOICES*/
+    #[Groups(["survey:write", "survey:read"])]
     private $multiple;
 
     /**
      * @ORM\OneToOne(targetEntity=TextArea::class, inversedBy="question", cascade={"persist", "remove"})
      */
-    #[Groups("survey:write")]
+    #[Groups(["survey:write", "survey:read"])]
     private $textArea;
 
     /**

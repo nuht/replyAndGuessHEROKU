@@ -5,11 +5,11 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TextAreaRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TextAreaRepository::class)
  */
-#[ApiResource]
 class TextArea
 {
     /**
@@ -17,31 +17,38 @@ class TextArea
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups("survey:read")]
     private $id;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $textAnswer;
+    #[Groups("survey:read")]
+    private $type;
 
     /**
      * @ORM\OneToOne(targetEntity=Question::class, mappedBy="textArea", cascade={"persist", "remove"})
      */
     private $question;
 
+    public function __construct()
+    {
+        $this->setType('text_answer');
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTextAnswer(): ?string
+    public function getType(): ?string
     {
-        return $this->textAnswer;
+        return $this->type;
     }
 
-    public function setTextAnswer(string $textAnswer): self
+    public function setType(string $type): self
     {
-        $this->textAnswer = $textAnswer;
+        $this->type = $type;
 
         return $this;
     }

@@ -10,7 +10,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=ChoiceRepository::class)
  */
-#[ApiResource]
 class Choice
 {
     /**
@@ -18,12 +17,13 @@ class Choice
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups("survey:read")]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    #[Groups("survey:write")]
+    #[Groups(["survey:write", "survey:read"])]
     private $propertyName;
 
     /**

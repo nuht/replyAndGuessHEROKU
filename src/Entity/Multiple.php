@@ -12,7 +12,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=MultipleRepository::class)
  */
-#[ApiResource]
 class Multiple
 {
     const TYPE_RADIO = 'radio';
@@ -23,18 +22,19 @@ class Multiple
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups("survey:read")]
     private $id;
 
     /**
      * @ORM\Column(type="string")
      */
-    #[Groups("survey:write")]
+    #[Groups(["survey:write", "survey:read"])]
     private $type;
 
     /**
      * @ORM\OneToMany(targetEntity=Choice::class, mappedBy="multiple", orphanRemoval=true, cascade={"persist"})
      */
-    #[Groups("survey:write")]
+    #[Groups(["survey:write", "survey:read"])]
     private $choices;
 
     /**

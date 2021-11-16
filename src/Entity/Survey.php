@@ -15,7 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=SurveyRepository::class)
  */
 #[ApiResource(
-    denormalizationContext: ["groups" => ["survey:write"]]
+    denormalizationContext: ["groups" => ["survey:write"]],
+    normalizationContext: ["groups" => ["survey:read"]]
 )]
 class Survey
 {
@@ -28,50 +29,56 @@ class Survey
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups("survey:read")]
     private $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
+    #[Groups("survey:read")]
     private $publishedAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
+    #[Groups("survey:read")]
     private $closedAt;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      */
-    #[Groups("survey:write")]
+    #[Groups(["survey:write", "survey:read"])]
     private $title;
 
     /**
      * @ORM\Column(type="text")
      */
-    #[Groups("survey:write")]
+    #[Groups(["survey:write", "survey:read"])]
     private $description;
 
     /**
      * @ORM\Column(type="string")
      */
+    #[Groups("survey:read")]
     private $status;
 
     /**
      * @ORM\Column(type="json", nullable=true)
      */
+    #[Groups("survey:read")]
     private $configSettings = [];
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups("survey:read")]
     private $hash;
 
     /**
      * @ORM\OneToMany(targetEntity=Question::class, mappedBy="survey", orphanRemoval=true, cascade={"persist"})
      */
-    #[Groups("survey:write")]
+    #[Groups(["survey:write", "survey:read"])]
     private $questions;
 
     /**

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20211116103232 extends AbstractMigration
+final class Version20211116120715 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -38,7 +38,7 @@ final class Version20211116103232 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_136AC113A76ED395 ON result (user_id)');
         $this->addSql('CREATE TABLE survey (id INT NOT NULL, company_id INT NOT NULL, published_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, closed_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, title VARCHAR(255) NOT NULL, description TEXT NOT NULL, status VARCHAR(255) NOT NULL, config_settings JSON DEFAULT NULL, hash VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_AD5F9BFC979B1AD6 ON survey (company_id)');
-        $this->addSql('CREATE TABLE text_area (id INT NOT NULL, text_answer TEXT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE text_area (id INT NOT NULL, type TEXT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('ALTER TABLE app_user ADD CONSTRAINT FK_88BDF3E9979B1AD6 FOREIGN KEY (company_id) REFERENCES company (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE choice ADD CONSTRAINT FK_C1AB5A92AEDC4C7D FOREIGN KEY (multiple_id) REFERENCES multiple (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE question ADD CONSTRAINT FK_B6F7494EAEDC4C7D FOREIGN KEY (multiple_id) REFERENCES multiple (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
