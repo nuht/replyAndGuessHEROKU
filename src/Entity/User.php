@@ -124,12 +124,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $company;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Survey::class, mappedBy="user", orphanRemoval=true)
-     */
-    private $surveys;
-
-
     public function __construct()
     {
         $this->setRegisterDate(new \DateTime('NOW', new \DateTimeZone('Europe/Paris')));
@@ -138,7 +132,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->setScore(0);
         $this->setHash(new Ulid());
         $this->results = new ArrayCollection();
-        $this->surveys = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -383,36 +376,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCompany(?Company $company): self
     {
         $this->company = $company;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Survey[]
-     */
-    public function getSurveys(): Collection
-    {
-        return $this->surveys;
-    }
-
-    public function addSurvey(Survey $survey): self
-    {
-        if (!$this->surveys->contains($survey)) {
-            $this->surveys[] = $survey;
-            $survey->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSurvey(Survey $survey): self
-    {
-        if ($this->surveys->removeElement($survey)) {
-            // set the owning side to null (unless already changed)
-            if ($survey->getUser() === $this) {
-                $survey->setUser(null);
-            }
-        }
 
         return $this;
     }

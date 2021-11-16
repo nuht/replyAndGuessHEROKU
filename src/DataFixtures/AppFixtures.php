@@ -80,7 +80,7 @@ Vos réponses ne seront traitées qu’à des fins statistiques et ce de manièr
 
 Merci d’avance pour votre aide.");
 
-        $survey->setUser($userAdmin);
+        $survey->setCompany($company[0]);
         $manager->persist($survey);
         $manager->flush();
 
