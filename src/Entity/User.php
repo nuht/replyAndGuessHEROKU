@@ -26,6 +26,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     denormalizationContext: ['user' => ['write']],
     collectionOperations: [
     'post' => ['validation_groups' => ['Default', 'create']]
+    ],
+    itemOperations: [
+        "get" => ["security" => "is_granted('ROLE_ADMIN') or object.getHash() == user.getHash()"],
+        "put" => ["security" => "is_granted('ROLE_ADMIN') or object.getHash() == user.getHash()"],
+        "delete" => ["security" => "is_granted('ROLE_ADMIN') or object.getHash() == user.getHash()"]
     ]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface

@@ -67,4 +67,3 @@ security:
         - { path: ^/api/surveys, roles: IS_AUTHENTICATED_FULLY, methods: [GET] }
         - { path: ^/api/companies, roles: ROLE_COMPANY, methods: [GET] }
         - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
-        # faire une route pour savoir si on est connecté et role is authenticated fully

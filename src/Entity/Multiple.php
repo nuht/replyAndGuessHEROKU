@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=MultipleRepository::class)
  */
+#[ApiResource]
 class Multiple
 {
     const TYPE_RADIO = 'radio';

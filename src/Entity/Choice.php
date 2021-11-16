@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=ChoiceRepository::class)
  */
+#[ApiResource]
 class Choice
 {
     /**

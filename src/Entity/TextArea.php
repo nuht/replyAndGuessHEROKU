@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=TextAreaRepository::class)
  */
+#[ApiResource]
 class TextArea
 {
     /**
