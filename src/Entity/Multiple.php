@@ -15,12 +15,20 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource]
 class Multiple
 {
+    const TYPE_RADIO = 'radio';
+    const TYPE_CHECKBOXES = 'checkboxes';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $type;
 
     /**
      * @ORM\OneToMany(targetEntity=Choice::class, mappedBy="multiple", orphanRemoval=true, cascade={"persist"})
@@ -41,6 +49,21 @@ class Multiple
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        if (!in_array($type, [self::TYPE_RADIO, self::TYPE_CHECKBOXES])) {
+            throw new \InvalidArgumentException("Invalid status");
+        }
+        $this->type = $type;
+
+        return $this;
     }
 
     /**
