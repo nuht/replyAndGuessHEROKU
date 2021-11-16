@@ -28,6 +28,7 @@ class Multiple
     /**
      * @ORM\Column(type="string")
      */
+    #[Groups("survey:write")]
     private $type;
 
     /**
