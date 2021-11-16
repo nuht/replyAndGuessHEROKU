@@ -20,6 +20,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@api-platform/admin": "^2.6.7",
         "@babel/eslint-parser": "^7.15.8",
         "@emotion/react": "^11.5.0",
         "@emotion/styled": "^11.3.0",
