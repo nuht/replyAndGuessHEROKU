@@ -56,6 +56,20 @@ export function SurveyList(props) {
             {
                 alert('Sondage introuvable');
             }
+
+            /*EDIT SURVEY LIST*/
+            setSurveyList((surveyList) => {
+                return surveyList.map(survey => {
+                    if (survey.id === id) {
+                        return {
+                            ...survey,
+                            status: nextSurveyStatus
+                        }
+                    }
+                    return survey;
+                });
+            });
+
             setAlertMessage(`Le sondage a bien été ${status === 'opened' ? 'fermé' : 'ouvert'}`);
             setShowAlert(true);
         })
