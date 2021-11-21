@@ -30,7 +30,8 @@ export function Survey(props) {
             setSurvey({
                 title: body.title,
                 description: body.description,
-                status: body.status
+                status: body.status,
+                questions: body.questions
             });
         });
     },[]);
@@ -39,6 +40,7 @@ export function Survey(props) {
     {
         return <CircularProgress />
     }
+    console.log(survey);
 
     return (
         <div>
@@ -48,6 +50,22 @@ export function Survey(props) {
                 <div>
                     <p>{survey.title}</p>
                     <p>{survey.description}</p>
+                    <ul>
+                        {survey.questions.map((question) => {
+                            if(question.multiple) {
+                                return (
+                                    <li key={question.id}>
+                                        <p>{question.multiple.type}</p>
+                                        <ul>
+                                            {question.multiple.choices.map((choice) => {
+                                                return <li key={choice.propertyName}>{choice.propertyName}</li>
+                                            })}
+                                        </ul>
+                                    </li>
+                                )
+                            }
+                        })}
+                    </ul>
                 </div>
             )}
         </div>
