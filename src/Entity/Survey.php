@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * @ORM\Entity(repositoryClass=SurveyRepository::class)
@@ -60,7 +61,7 @@ class Survey
     /**
      * @ORM\Column(type="string")
      */
-    #[Groups("survey:read")]
+    #[Groups(["survey:write", "survey:read"])]
     private $status;
 
     /**
@@ -163,7 +164,7 @@ class Survey
     public function setStatus(string $status): self
     {
         if (!in_array($status, [self::STATUS_OPENED, self::STATUS_CLOSED, self::STATUS_WAITING])) {
-            throw new \InvalidArgumentException("Invalid status");
+            throw new HttpException( 400, 'Invalid status');
         }
         $this->status = $status;
 

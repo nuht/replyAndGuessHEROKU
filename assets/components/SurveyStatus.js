@@ -8,7 +8,9 @@ function getStatusColor(status) {
     if (status === 'opened') {
         return 'green';
     }
-    return 'black';
+    if (status === 'closed') {
+        return 'red';
+    }
 }
 
 export const SurveyStatus = styled.div`

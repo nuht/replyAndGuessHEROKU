@@ -13,6 +13,17 @@ SurveyCard.propTypes = {
     toggleSurveyStatus: PropTypes.func.isRequired
 }
 
+function getButtonTitle(status)
+{
+    switch (status) {
+        case 'closed' :
+        case 'waiting' :
+            return 'ouvrir';
+        case 'opened' :
+            return 'fermer';
+    }
+}
+
 export function SurveyCard(props) {
     return (
         <Card sx={{minWidth: 275}}>
@@ -31,7 +42,7 @@ export function SurveyCard(props) {
             </Link>
             <CardActions>
                 <Button onClick={props.toggleSurveyStatus}
-                        size="small">{props.survey.status === 'waiting' ? 'Activer' : 'Désactiver'}</Button>
+                        size="small">{getButtonTitle(props.survey.status)}</Button>
             </CardActions>
         </Card>
     )
