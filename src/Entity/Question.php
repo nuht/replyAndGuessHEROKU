@@ -34,22 +34,16 @@ class Question
     private $isRequired;
 
     /**
-     * @ORM\OneToOne(targetEntity=Multiple::class, inversedBy="question", cascade={"persist", "remove"})
-     */
-    #[Groups(["survey:write", "survey:read"])]
-    private $multiple;
-
-    /**
-     * @ORM\OneToOne(targetEntity=TextArea::class, inversedBy="question", cascade={"persist", "remove"})
-     */
-    #[Groups(["survey:write", "survey:read"])]
-    private $textArea;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Survey::class, inversedBy="questions")
      * @ORM\JoinColumn(nullable=false)
      */
     private $survey;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    #[Groups(["survey:write", "survey:read"])]
+    private $choices = [];
     
     public function __construct()
     {
@@ -116,6 +110,18 @@ class Question
     public function setSurvey(?Survey $survey): self
     {
         $this->survey = $survey;
+
+        return $this;
+    }
+
+    public function getChoices(): ?array
+    {
+        return $this->choices;
+    }
+
+    public function setChoices(array $choices): self
+    {
+        $this->choices = $choices;
 
         return $this;
     }

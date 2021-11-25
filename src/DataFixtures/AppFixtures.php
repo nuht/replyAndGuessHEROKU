@@ -70,7 +70,7 @@ class AppFixtures extends Fixture implements FixtureInterface
         $manager->persist($userAdmin);
         $manager->flush();
 
-        $survey = new Survey();
+        /*$survey = new Survey();
         $survey->setTitle('Etude de marché food truck Argentin');
         $survey->setDescription("Bonjour,
 
@@ -271,7 +271,7 @@ Merci d’avance pour votre aide.");
             $manager->persist($questionElement);
         }
 
-        $manager->flush();
+        $manager->flush();*/
 
     }
 

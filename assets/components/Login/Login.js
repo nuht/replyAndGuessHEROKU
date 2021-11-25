@@ -10,11 +10,18 @@ Login.propTypes = {
 export function Login(props)
 {
     let emailInputRef = React.useRef(null);
-    let passwordRef = React.useRef(null);
-    const[error, setError] = React.useState(false);
+    let passwordInputRef = React.useRef(null);
+    const[error, setError] = React.useState("");
 
     function handleOnSubmit(event) {
         event.preventDefault();
+        const emailValue = emailInputRef.current.value;
+        const passwordValue = passwordInputRef.current.value;
+        if(emailValue === "" || passwordValue === "")
+        {
+            setError("Les champs ne doivent pas être vide");
+            return;
+        }
 
         fetch(`${process.env.API_URL}/api/login`, {
             method: "POST",
@@ -23,12 +30,12 @@ export function Login(props)
             },
             body: JSON.stringify({
                 "email": emailInputRef.current.value,
-                "password": passwordRef.current.value
+                "password": passwordInputRef.current.value
             })
         }).then(response => {
             console.log(response);
             if(response.status !== 204) {
-                setError(true);
+                setError("Il y a eu une erreur :" + response.statusText);
             }
             if(response.status === 204)
             {
@@ -43,13 +50,13 @@ export function Login(props)
     }
 
     return (<div>
-        {error &&  "le mot de passe ne peut pas être une string vide"}
+        {error && <p>{error}</p>}
         <form onSubmit={handleOnSubmit}>
             <label htmlFor="email">Entrez votre email:</label>
             <input id="email" ref={emailInputRef} type="email" name="email" placeholder="email" />
 
             <label htmlFor="password">Entrez votre mot de passe:</label>
-            <input id="password" ref={passwordRef} type="password" name="password" placeholder="password"/>
+            <input id="password" ref={passwordInputRef} type="password" name="password" placeholder="password"/>
 
             <Button variant="contained" type="submit">Se connecter</Button>
         </form>

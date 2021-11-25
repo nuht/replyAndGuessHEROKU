@@ -7,7 +7,8 @@ SurveyEdit.propTypes = {
         id:PropTypes.number,
         status:PropTypes.string,
         title:PropTypes.string,
-        description:PropTypes.string
+        description:PropTypes.string,
+        questions:PropTypes.array
     }).isRequired
 };
 
@@ -39,11 +40,30 @@ export function SurveyEdit(props) {
     return (
         <div>
             <form onSubmit={handleOnSubmit}>
-                <label htmlFor="title">Titre :</label>
-                <input ref={titleInputRef} id="title" type="text" name="title"/>
+                <p>
+                    <label htmlFor="title">Titre :</label>
+                    <input ref={titleInputRef} id="title" type="text" name="title"/>
+                </p>
+                <p>
+                    <label htmlFor="description">Description :</label>
+                    <input ref={descriptionInputRef} id="description" type="text" name="description"/>
+                </p>
 
-                <label htmlFor="description">Description :</label>
-                <input ref={descriptionInputRef} id="description" type="text" name="description"/>
+                <ul>
+                    {survey.questions.map((question) => {
+                        if(question.multiple) {
+                            return (
+                                <li key={question.id}>
+                                    <ul>
+                                        {question.multiple.choices.map((choice) => {
+                                            return <input key={choice.propertyName} type={multipleQuestionTypeToHTMLInputType}></input>
+                                        })}
+                                    </ul>
+                                </li>
+                            )
+                        }
+                    })}
+                </ul>
 
                 <Button variant="contained" type="submit">Sauvegarder</Button>
             </form>
