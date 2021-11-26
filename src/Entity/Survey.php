@@ -60,6 +60,7 @@ class Survey
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     #[Groups(["survey:write", "survey:read"])]
     private $description;

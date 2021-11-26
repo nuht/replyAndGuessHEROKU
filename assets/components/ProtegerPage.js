@@ -1,16 +1,14 @@
 import React from "react";
-import{Redirect} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 export function ProtegerPage(props) {
+  function utilisateurEstIlConnecte() {
+    return localStorage.getItem("logged_in");
+  }
 
-    function utilisateurEstIlConnecte() {
-        return localStorage.getItem('logged_in');
-    };
+  if (utilisateurEstIlConnecte()) {
+    return props.children;
+  }
 
-    if (utilisateurEstIlConnecte()) {
-        return props.children;
-    }
-
-    return <Redirect to="/login" />
-
+  return <Redirect to="/login" />;
 }
