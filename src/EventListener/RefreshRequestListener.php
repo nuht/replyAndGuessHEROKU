@@ -19,6 +19,7 @@ class RefreshRequestListener implements EventSubscriberInterface {
     public function onKernelRequest(RequestEvent $event) {
         $request = $event->getRequest();
 
+        /*Si on est la route pour refresh le token, permet d'ajouter en attribut de la requete le cookie contenant notre refresh token*/
         if($request->attributes->get('_route') === 'gesdinet_jwt_refresh_token') {
             if($request->cookies->get('REFRESH_TOKEN')) {
                 $request->attributes->set('refresh_token', $request->cookies->get('REFRESH_TOKEN'));
