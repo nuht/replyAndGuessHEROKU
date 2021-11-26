@@ -78,30 +78,6 @@ class Question
         return $this;
     }
 
-    public function getMultiple(): ?Multiple
-    {
-        return $this->multiple;
-    }
-
-    public function setMultiple(?Multiple $multiple): self
-    {
-        $this->multiple = $multiple;
-
-        return $this;
-    }
-
-    public function getTextArea(): ?TextArea
-    {
-        return $this->textArea;
-    }
-
-    public function setTextArea(?TextArea $textArea): self
-    {
-        $this->textArea = $textArea;
-
-        return $this;
-    }
-
     public function getSurvey(): ?Survey
     {
         return $this->survey;

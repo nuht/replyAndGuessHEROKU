@@ -2,12 +2,9 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Choice;
 use App\Entity\Company;
-use App\Entity\Multiple;
 use App\Entity\Question;
 use App\Entity\Survey;
-use App\Entity\TextArea;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -70,7 +67,7 @@ class AppFixtures extends Fixture implements FixtureInterface
         $manager->persist($userAdmin);
         $manager->flush();
 
-        /*$survey = new Survey();
+        $survey = new Survey();
         $survey->setTitle('Etude de marché food truck Argentin');
         $survey->setDescription("Bonjour,
 
@@ -251,27 +248,17 @@ Merci d’avance pour votre aide.");
         foreach ($arrayQuestion as $question) {
             $questionElement = new Question();
             $questionElement->setSurvey($survey);
-            if($question['question_type'] === 'multiple') {
-                $element = new Multiple();
-                $element->setType($question['type']);
-                $questionElement->setMultiple($element);
-                foreach ($question['choice'] as $choice) {
-                    $choiceElement = new Choice();
-                    $choiceElement->setMultiple($element);
-                    $choiceElement->setPropertyName($choice);
-                    $manager->persist($choiceElement);
-                }
-            }
-            if($question['question_type'] === 'text_area') {
-                $element = new TextArea();
-                $questionElement->setTextArea($element);
-            }
+            $questionElement->setChoices([
+                'question_type' => $question['question_type'],
+                'choices_type' => $question['type'],
+                'choices' => $question['choice']
+            ]);
             $questionElement->setText($question['text']);
             $questionElement->setIsRequired($question['is_required']);
             $manager->persist($questionElement);
         }
 
-        $manager->flush();*/
+        $manager->flush();
 
     }
 
