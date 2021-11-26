@@ -17,7 +17,13 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 #[ApiResource(
     denormalizationContext: ["groups" => ["survey:write"]],
-    normalizationContext: ["groups" => ["survey:read"]]
+    normalizationContext: ["groups" => ["survey:read"]],
+    itemOperations: [
+        "get" => [
+            "security" => "is_granted('CAN_ANSWER', object)",
+            "security_message" => "Vous pouvez seulement répondre une seule fois par sondage.",
+        ]
+    ]
 )]
 class Survey
 {
