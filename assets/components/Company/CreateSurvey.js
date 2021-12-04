@@ -3,16 +3,21 @@ import {
   Alert,
   Button,
   Checkbox,
-  Container,
   FormControlLabel,
   FormGroup,
+  FormLabel, Radio,
+  RadioGroup,
   Stack,
-  TextareaAutosize,
   TextField,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import {SurveyLayout} from "../Survey/style";
 import {useUserContext} from "../../user-context";
+
+const QuestionTypes = {
+  OUVERTE : "ouverte",
+  CHOIX_MULTIPLE : "multiple"
+};
 
 CreateSurvey.propTypes = {
   history: PropTypes.object.isRequired,
@@ -93,7 +98,7 @@ export function CreateSurvey(props) {
         ...previousQuestionList,
         {
           title: "",
-          type: "textarea",
+          type: QuestionTypes.OUVERTE,
           isRequired: false,
         },
       ];
@@ -136,33 +141,52 @@ export function CreateSurvey(props) {
           {questionList.map((question, index) => {
             return (
               <div key={`${index}`}>
-                <Stack spacing={2}>
-                  {formErrors.questions && formErrors.questions[index] && <Alert severity="error">{formErrors.questions[index]}</Alert>}
-                  <TextField
-                      error={formErrors.questions}
-                      fullWidth
-                      label="Entrez la question"
-                      value={question.title}
-                      onChange={(event) =>
-                          handleChangeOnQuestion("title", index, event.target.value)
-                      }
-                      type="text"
-                  />
-                </Stack>
-                <FormGroup>
-                  <FormControlLabel sx={{userSelect: "none"}} control={<Checkbox
-                      id={`question.${index}`}
-                      checked={question.isRequired}
-                      onChange={(event) =>
-                          handleChangeOnQuestion(
-                              "isRequired",
-                              index,
-                              event.target.checked
-                          )
-                      }
-                      type="checkbox"
-                  />} label="Rendre la question obligatoire" />
-                </FormGroup>
+                <FormLabel component="legend">Type de question</FormLabel>
+                <RadioGroup
+                    aria-label="type de question"
+                    name="radio-buttons-group"
+                    value={question.type}
+                    onChange={(event, value) => {
+                      handleChangeOnQuestion("type", index, value);
+                    }}
+                >
+                  <FormControlLabel value={QuestionTypes.OUVERTE} control={<Radio />} label="Question ouverte" />
+                  <FormControlLabel value={QuestionTypes.CHOIX_MULTIPLE} control={<Radio />} label="Question à choix multiple" />
+                </RadioGroup>
+
+                {question.type === QuestionTypes.OUVERTE ? (
+                    <>
+                      <Stack spacing={2}>
+                        {formErrors.questions && formErrors.questions[index] && <Alert severity="error">{formErrors.questions[index]}</Alert>}
+                        <TextField
+                            error={formErrors.questions}
+                            fullWidth
+                            label="Entrez la question"
+                            value={question.title}
+                            onChange={(event) =>
+                                handleChangeOnQuestion("title", index, event.target.value)
+                            }
+                            type="text"
+                        />
+                      </Stack>
+                      <FormGroup>
+                        <FormControlLabel sx={{userSelect: "none"}} control={<Checkbox
+                            id={`question.${index}`}
+                            checked={question.isRequired}
+                            onChange={(event) =>
+                                handleChangeOnQuestion(
+                                    "isRequired",
+                                    index,
+                                    event.target.checked
+                                )
+                            }
+                            type="checkbox"
+                        />} label="Rendre la question obligatoire" />
+                      </FormGroup>
+                    </>
+                ) : (
+                    <h3>Toto</h3>
+                )}
               </div>
             );
           })}
