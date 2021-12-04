@@ -25,7 +25,6 @@ export function Survey(props) {
         return response.json();
       })
       .then((body) => {
-        console.log(body);
         setSurvey({
           title: body.title,
           description: body.description,
@@ -38,7 +37,6 @@ export function Survey(props) {
   if (survey === null) {
     return <CircularProgress />;
   }
-  console.log(survey);
 
   return (
     <div>

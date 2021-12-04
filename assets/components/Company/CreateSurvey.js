@@ -1,29 +1,57 @@
 import React from "react";
-import {
-  Button,
-  Checkbox,
-  Container,
-  inputClasses,
-  Stack,
-  TextareaAutosize,
-  TextField,
-} from "@mui/material";
+import {Alert, Button, Checkbox, Container, Stack, TextareaAutosize, TextField,} from "@mui/material";
 import PropTypes from "prop-types";
+import {SurveyLayout} from "../Survey/style";
+import {useUserContext} from "../../user-context";
+
 CreateSurvey.propTypes = {
-  id: PropTypes.number,
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
 };
 
 export function CreateSurvey(props) {
+  const currentUser = useUserContext();
   let titleRef = React.useRef(null);
   let descriptionRef = React.useRef(null);
   const [info, setInfo] = React.useState("");
   const [questionList, setQuestionList] = React.useState([]);
+  const [formErrors, setFormErrors] = React.useState({});
+
+  function isFormValid() {
+    let errors = {};
+    if (titleRef.current.value === "") {
+        errors.title = "Un titre doit être renseigné.";
+    }
+    if (descriptionRef.current.value === "") {
+        errors.description = "Une description doit être renseignée.";
+    }
+    questionList.map((question, index) => {
+      if(question.title === ""){
+        if(errors.questions) {
+          errors.questions[index] = `Un titre doit être renseigné sur la question ${index+1}`;
+        } else {
+          errors.questions = {};
+          errors.questions[index] = `Un titre doit être renseigné sur la question ${index+1}`;
+        }
+      }
+    });
+
+    return {
+      valid : Object.keys(errors).length === 0,
+      errors
+    };
+  }
 
   function handleOnSubmit(event) {
     event.preventDefault();
+
+    let formValidationResult = isFormValid();
+
+    if (formValidationResult.valid === false) {
+      setFormErrors(formValidationResult.errors);
+      return;
+    }
 
     fetch(`${process.env.API_URL}/api/surveys`, {
       method: "POST",
@@ -33,7 +61,8 @@ export function CreateSurvey(props) {
       body: JSON.stringify({
         title: titleRef.current.value,
         description: descriptionRef.current.value,
-        user: "api/users/" + props.id,
+        user: "api/users/" + currentUser.id,
+        company: "api/companies/" + currentUser.companyId
       }),
     })
       .then((response) => {
@@ -44,7 +73,7 @@ export function CreateSurvey(props) {
       .then((body) => {
         props.history.push("/survey/" + body.id);
       })
-      .catch((error) => {});
+      .catch(() => {});
   }
 
   function handleAddQuestion() {
@@ -76,12 +105,13 @@ export function CreateSurvey(props) {
   }
 
   return (
-    <div>
+    <SurveyLayout>
       {info}
-      <h1>Créer un sondage</h1>
       <form onSubmit={handleOnSubmit}>
         <Stack spacing={2}>
+          {formErrors.title && <Alert severity="error">{formErrors.title}</Alert>}
           <TextField inputRef={titleRef} label="Entrez un titre :" />
+          {formErrors.description && <Alert severity="error">{formErrors.description}</Alert>}
           <TextareaAutosize
             aria-label="modifier description sondage"
             maxRows="10"
@@ -95,6 +125,7 @@ export function CreateSurvey(props) {
           {questionList.map((question, index) => {
             return (
               <Container fixed key={`${index}`}>
+                {formErrors.questions && formErrors.questions[index] && <Alert severity="error">{formErrors.questions[index]}</Alert>}
                 <TextField
                   value={question.title}
                   onChange={(event) =>
@@ -121,6 +152,6 @@ export function CreateSurvey(props) {
           </Button>
         </Stack>
       </form>
-    </div>
+    </SurveyLayout>
   );
 }

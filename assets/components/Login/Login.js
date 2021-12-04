@@ -32,7 +32,6 @@ export function Login(props) {
       }),
     })
       .then((response) => {
-        console.log(response);
         if (response.status !== 204) {
           setError("Il y a eu une erreur :" + response.statusText);
         }
@@ -42,7 +41,7 @@ export function Login(props) {
           window.dispatchEvent(new Event("addItem"));
         }
       })
-      .catch((error) => {});
+      .catch(() => {});
   }
 
   return (

@@ -28,6 +28,7 @@ import { NotFound } from "./components/NotFound";
 import { Survey } from "./components/Survey/Survey";
 import PropTypes from "prop-types";
 import { SurveyList } from "./components/SurveyList/SurveyList";
+import {UserContext} from "./user-context";
 
 App.propTypes = {
   history: PropTypes.object.isRequired,
@@ -35,9 +36,15 @@ App.propTypes = {
   location: PropTypes.object.isRequired,
 };
 
+/*const user = {
+  id : "",
+  email: "",
+  company_id: "",
+  roles: ""
+};*/
+
 function App(props) {
-  const [roles, setRoles] = React.useState([]);
-  const [id, setId] = React.useState(null);
+  const [user, setUser] = React.useState(null);
   React.useEffect(() => {
     if (localStorage.getItem("logged_in") === "true") {
       getAndSetUserRoles();
@@ -54,8 +61,12 @@ function App(props) {
         return response.json();
       })
       .then((body) => {
-        setRoles(body.jwt.roles);
-        setId(body.user.id);
+        setUser({
+          id : body.user.id,
+          email: body.user.email,
+          companyId: body.user.company.id,
+          roles: body.user.role
+        });
       });
   }
 
@@ -75,36 +86,24 @@ function App(props) {
   }, []);
 
   return (
-    <>
-      <Navigation roles={roles} />
+    <UserContext.Provider value = {user}>
+      <Navigation roles={user && user.roles ? user.roles : []} />
       <Container maxWidth="md">
         <Switch>
           <Route
             path={["/", "/surveys"]}
             exact
-            render={(routeProps) => {
-              return <SurveyList {...routeProps} />;
-            }}
-          ></Route>
+            component = {SurveyList}/>
           <Route
             path="/company/createSurvey"
-            render={(routeProps) => {
-              return <CreateSurvey {...routeProps} id={id} />;
-            }}
-          ></Route>
+            component = {CreateSurvey}/>
           <Route
             path="/survey/:id"
-            render={(routeProps) => {
-              return <Survey {...routeProps} />;
-            }}
-          ></Route>
+            component= {Survey}/>
           <Route
             path="/login"
             exact
-            render={(routeProps) => {
-              return <Login {...routeProps} />;
-            }}
-          ></Route>
+            component={Login}/>;
           <Route path="/questions">
             <h1>Liste des questions</h1>
           </Route>
@@ -119,7 +118,7 @@ function App(props) {
           </Route>
         </Switch>
       </Container>
-    </>
+    </UserContext.Provider>
   );
 }
 const AppWithRouteProps = withRouter(App);
