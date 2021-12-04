@@ -62,9 +62,9 @@ export function SurveyEdit(props) {
                     {question.multiple.choices.map((choice) => {
                       return (
                         <input
-                          key={choice.propertyName}
-                          type={multipleQuestionTypeToHTMLInputType}
-                        ></input>
+    key={choice.propertyName}
+    type={multipleQuestionTypeToHTMLInputType}
+    />
                       );
                     })}
                   </ul>

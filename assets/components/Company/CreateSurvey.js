@@ -1,5 +1,15 @@
 import React from "react";
-import {Alert, Button, Checkbox, Container, Stack, TextareaAutosize, TextField,} from "@mui/material";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Container,
+  FormControlLabel,
+  FormGroup,
+  Stack,
+  TextareaAutosize,
+  TextField,
+} from "@mui/material";
 import PropTypes from "prop-types";
 import {SurveyLayout} from "../Survey/style";
 import {useUserContext} from "../../user-context";
@@ -108,43 +118,52 @@ export function CreateSurvey(props) {
     <SurveyLayout>
       {info}
       <form onSubmit={handleOnSubmit}>
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           {formErrors.title && <Alert severity="error">{formErrors.title}</Alert>}
-          <TextField inputRef={titleRef} label="Entrez un titre :" />
+          <TextField error={formErrors.title} inputRef={titleRef} label="Entrez un titre" />
           {formErrors.description && <Alert severity="error">{formErrors.description}</Alert>}
-          <TextareaAutosize
+          <TextField
             aria-label="modifier description sondage"
             maxRows="10"
             minRows="4"
             ref={descriptionRef}
-            placeholder="Entrez une description"
+            label="Entrez une description"
+            multiline
           />
           <Button variant="outlined" onClick={handleAddQuestion}>
             Ajouter une question
           </Button>
           {questionList.map((question, index) => {
             return (
-              <Container fixed key={`${index}`}>
-                {formErrors.questions && formErrors.questions[index] && <Alert severity="error">{formErrors.questions[index]}</Alert>}
-                <TextField
-                  value={question.title}
-                  onChange={(event) =>
-                    handleChangeOnQuestion("title", index, event.target.value)
-                  }
-                  type="text"
-                />
-                <Checkbox
-                  checked={question.isRequired}
-                  onChange={(event) =>
-                    handleChangeOnQuestion(
-                      "isRequired",
-                      index,
-                      event.target.checked
-                    )
-                  }
-                  type="checkbox"
-                />
-              </Container>
+              <div key={`${index}`}>
+                <Stack spacing={2}>
+                  {formErrors.questions && formErrors.questions[index] && <Alert severity="error">{formErrors.questions[index]}</Alert>}
+                  <TextField
+                      error={formErrors.questions}
+                      fullWidth
+                      label="Entrez la question"
+                      value={question.title}
+                      onChange={(event) =>
+                          handleChangeOnQuestion("title", index, event.target.value)
+                      }
+                      type="text"
+                  />
+                </Stack>
+                <FormGroup>
+                  <FormControlLabel sx={{userSelect: "none"}} control={<Checkbox
+                      id={`question.${index}`}
+                      checked={question.isRequired}
+                      onChange={(event) =>
+                          handleChangeOnQuestion(
+                              "isRequired",
+                              index,
+                              event.target.checked
+                          )
+                      }
+                      type="checkbox"
+                  />} label="Rendre la question obligatoire" />
+                </FormGroup>
+              </div>
             );
           })}
           <Button variant="contained" type="submit">
