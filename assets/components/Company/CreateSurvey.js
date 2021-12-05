@@ -1,7 +1,7 @@
 import React from "react";
 import {
   Alert,
-  Button,
+  Button, Card,
   Checkbox,
   FormControlLabel,
   FormGroup,
@@ -139,97 +139,66 @@ export function CreateSurvey(props) {
             label="Entrez une description"
             multiline
           />
-          <Button variant="outlined" onClick={handleAddQuestion}>
-            Ajouter une question
-          </Button>
-          {questionList.map((question, index) => {
-            return (
-              <div key={`${index}`}>
-                <FormLabel component="legend">Type de question</FormLabel>
-                <RadioGroup
-                    aria-label="type de question"
-                    name="radio-buttons-group"
-                    value={question.type}
-                    onChange={(event, value) => {
-                      handleChangeOnQuestion("type", index, value);
-                    }}
-                >
-                  <FormControlLabel value={QuestionTypes.OUVERTE} control={<Radio />} label="Question ouverte" />
-                  <FormControlLabel value={QuestionTypes.CHOIX_MULTIPLE} control={<Radio />} label="Question à choix multiple" />
-                </RadioGroup>
-
-                {question.type === QuestionTypes.OUVERTE ? (
-                    <>
-                      <Stack spacing={2}>
-                        {formErrors.questions && formErrors.questions[index] && <Alert severity="error">{formErrors.questions[index]}</Alert>}
-                        <TextField
-                            error={formErrors.questions}
-                            fullWidth
-                            label="Entrez la question"
-                            value={question.title}
-                            onChange={(event) =>
-                                handleChangeOnQuestion("title", index, event.target.value)
-                            }
-                            type="text"
-                        />
-                      </Stack>
-                      <FormGroup>
-                        <FormControlLabel sx={{userSelect: "none"}} control={<Checkbox
-                            id={`question.${index}`}
-                            checked={question.isRequired}
-                            onChange={(event) =>
-                                handleChangeOnQuestion(
-                                    "isRequired",
-                                    index,
-                                    event.target.checked
-                                )
-                            }
-                            type="checkbox"
-                        />} label="Rendre la question obligatoire" />
-                      </FormGroup>
-                    </>
-                ) : (
-                    <>
-                      <Stack spacing={2}>
-                        {formErrors.questions && formErrors.questions[index] && <Alert severity="error">{formErrors.questions[index]}</Alert>}
-                        <TextField
-                            error={formErrors.questions}
-                            fullWidth
-                            label="Entrez la question"
-                            value={question.title}
-                            onChange={(event) =>
-                                handleChangeOnQuestion("title", index, event.target.value)
-                            }
-                            type="text"
-                        />
-                      </Stack>
-                      <FormGroup>
-                        <Stack direction="row">
-                          <FormControlLabel sx={{userSelect: "none"}} control={<Checkbox
-                              id={`question.${index}`}
-                              checked={question.isRequired}
-                              onChange={(event) =>
-                                  handleChangeOnQuestion(
-                                      "isRequired",
-                                      index,
-                                      event.target.checked
-                                  )
-                              }
-                              type="checkbox"
-                          />} label="Rendre la question obligatoire" />
-                          <Button variant="outlined" onClick={handleAddChoice}>
-                            Ajouter un choix
-                          </Button>
-                        </Stack>
-                      </FormGroup>
-                    </>
-                )}
-              </div>
-            );
-          })}
-          <Button variant="contained" type="submit">
-            Créer le sondage
-          </Button>
+          <Stack spacing={3}>
+            {questionList.map((question, index) => {
+              return (
+                  <Card sx={{padding: "10px 20px"}} key={`${index}`}>
+                    <FormLabel component="legend">Type de question</FormLabel>
+                    <RadioGroup
+                        aria-label="type de question"
+                        name="radio-buttons-group"
+                        value={question.type}
+                        onChange={(event, value) => {
+                          handleChangeOnQuestion("type", index, value);
+                        }}
+                    >
+                      <FormControlLabel value={QuestionTypes.OUVERTE} control={<Radio />} label="Question ouverte" />
+                      <FormControlLabel value={QuestionTypes.CHOIX_MULTIPLE} control={<Radio />} label="Question à choix multiple" />
+                    </RadioGroup>
+                    <Stack spacing={2}>
+                      {formErrors.questions && formErrors.questions[index] && <Alert severity="error">{formErrors.questions[index]}</Alert>}
+                      <TextField
+                          error={formErrors.questions}
+                          fullWidth
+                          label="Entrez la question"
+                          value={question.title}
+                          onChange={(event) =>
+                              handleChangeOnQuestion("title", index, event.target.value)
+                          }
+                          type="text"
+                      />
+                      <FormControlLabel sx={{userSelect: "none"}} control={<Checkbox
+                          id={`question.${index}`}
+                          checked={question.isRequired}
+                          onChange={(event) =>
+                              handleChangeOnQuestion(
+                                  "isRequired",
+                                  index,
+                                  event.target.checked
+                              )
+                          }
+                          type="checkbox"
+                      />} label="Rendre la question obligatoire" />
+                      {question.type === QuestionTypes.CHOIX_MULTIPLE &&
+                              <Stack direction="row">
+                                <Button variant="outlined" onClick={handleAddChoice}>
+                                  Ajouter un choix
+                                </Button>
+                              </Stack>
+                      }
+                    </Stack>
+                  </Card>
+              );
+            })}
+            <Stack spacing={1}>
+              <Button variant="outlined" onClick={handleAddQuestion}>
+                Ajouter une question
+              </Button>
+              <Button variant="contained" type="submit">
+                Créer le sondage
+              </Button>
+            </Stack>
+          </Stack>
         </Stack>
       </form>
     </SurveyLayout>
