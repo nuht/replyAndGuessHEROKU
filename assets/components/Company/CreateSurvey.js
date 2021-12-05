@@ -33,6 +33,23 @@ CreateSurvey.propTypes = {
   location: PropTypes.object.isRequired,
 };
 
+function mapToSurveyApi(param) {
+  return {
+    title: param.title,
+    description: param.description,
+    user: "api/users/" + param.user,
+    company: "api/companies/" + param.companyId,
+    questions: param.questionList.map((question) => {
+      return {
+          choicesType: question.choicesType,
+          text: question.text,
+          isRequired: question.isRequired,
+          choices: question.choices
+        }
+    })
+  };
+}
+
 export function CreateSurvey(props) {
   const currentUser = useUserContext();
   let titleRef = React.useRef(null);
@@ -40,6 +57,8 @@ export function CreateSurvey(props) {
   const [info, setInfo] = React.useState("");
   const [questionList, setQuestionList] = React.useState([]);
   const [formErrors, setFormErrors] = React.useState({});
+
+  /*@Todo Rajouter la partie validations des choices ou non parce qu'on peut mettre des string vide*/
 
   function isFormValid() {
     let errors = {};
@@ -81,12 +100,13 @@ export function CreateSurvey(props) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
+      body: JSON.stringify(mapToSurveyApi({
         title: titleRef.current.value,
         description: descriptionRef.current.value,
-        user: "api/users/" + currentUser.id,
-        company: "api/companies/" + currentUser.companyId
-      }),
+        user: currentUser.id,
+        company: currentUser.companyId,
+        questionList
+      })),
     })
       .then((response) => {
         if (response.status === 201) {
