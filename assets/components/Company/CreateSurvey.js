@@ -119,6 +119,10 @@ export function CreateSurvey(props) {
     });
   }
 
+  function handleAddChoice() {
+
+  }
+
   return (
     <SurveyLayout>
       {info}
@@ -185,7 +189,40 @@ export function CreateSurvey(props) {
                       </FormGroup>
                     </>
                 ) : (
-                    <h3>Toto</h3>
+                    <>
+                      <Stack spacing={2}>
+                        {formErrors.questions && formErrors.questions[index] && <Alert severity="error">{formErrors.questions[index]}</Alert>}
+                        <TextField
+                            error={formErrors.questions}
+                            fullWidth
+                            label="Entrez la question"
+                            value={question.title}
+                            onChange={(event) =>
+                                handleChangeOnQuestion("title", index, event.target.value)
+                            }
+                            type="text"
+                        />
+                      </Stack>
+                      <FormGroup>
+                        <Stack direction="row">
+                          <FormControlLabel sx={{userSelect: "none"}} control={<Checkbox
+                              id={`question.${index}`}
+                              checked={question.isRequired}
+                              onChange={(event) =>
+                                  handleChangeOnQuestion(
+                                      "isRequired",
+                                      index,
+                                      event.target.checked
+                                  )
+                              }
+                              type="checkbox"
+                          />} label="Rendre la question obligatoire" />
+                          <Button variant="outlined" onClick={handleAddChoice}>
+                            Ajouter un choix
+                          </Button>
+                        </Stack>
+                      </FormGroup>
+                    </>
                 )}
               </div>
             );
