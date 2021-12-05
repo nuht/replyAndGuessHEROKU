@@ -1,15 +1,18 @@
 import React from "react";
 import {
   Alert,
-  Button, Card,
+  Button,
+  Card,
   Checkbox,
   FormControlLabel,
-  FormGroup,
-  FormLabel, Radio,
+  FormLabel,
+  IconButton,
+  Radio,
   RadioGroup,
   Stack,
   TextField,
 } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 import PropTypes from "prop-types";
 import {SurveyLayout} from "../Survey/style";
 import {useUserContext} from "../../user-context";
@@ -142,19 +145,22 @@ export function CreateSurvey(props) {
           <Stack spacing={3}>
             {questionList.map((question, index) => {
               return (
-                  <Card sx={{padding: "10px 20px"}} key={`${index}`}>
-                    <FormLabel component="legend">Type de question</FormLabel>
-                    <RadioGroup
-                        aria-label="type de question"
-                        name="radio-buttons-group"
-                        value={question.type}
-                        onChange={(event, value) => {
-                          handleChangeOnQuestion("type", index, value);
-                        }}
-                    >
-                      <FormControlLabel value={QuestionTypes.OUVERTE} control={<Radio />} label="Question ouverte" />
-                      <FormControlLabel value={QuestionTypes.CHOIX_MULTIPLE} control={<Radio />} label="Question à choix multiple" />
-                    </RadioGroup>
+                  <Card sx={{padding: "10px 20px", position: "relative"}} key={`${index}`}>
+                      <IconButton color={"primary"} sx={{position: "absolute", right: 0, top: 0}} aria-label="delete">
+                        <DeleteIcon />
+                      </IconButton>
+                      <FormLabel component="legend">Type de question</FormLabel>
+                      <RadioGroup
+                          aria-label="type de question"
+                          name="radio-buttons-group"
+                          value={question.type}
+                          onChange={(event, value) => {
+                            handleChangeOnQuestion("type", index, value);
+                          }}
+                      >
+                        <FormControlLabel value={QuestionTypes.OUVERTE} control={<Radio />} label="Question ouverte" />
+                        <FormControlLabel value={QuestionTypes.CHOIX_MULTIPLE} control={<Radio />} label="Question à choix multiple" />
+                      </RadioGroup>
                     <Stack spacing={2}>
                       {formErrors.questions && formErrors.questions[index] && <Alert severity="error">{formErrors.questions[index]}</Alert>}
                       <TextField
