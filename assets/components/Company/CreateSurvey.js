@@ -22,6 +22,11 @@ const QuestionTypes = {
   CHOIX_MULTIPLE : "multiple"
 };
 
+const ChoicesTypes = {
+  RADIO : "radio",
+  CHECKBOX : "checkbox"
+};
+
 CreateSurvey.propTypes = {
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
@@ -103,6 +108,8 @@ export function CreateSurvey(props) {
           title: "",
           type: QuestionTypes.OUVERTE,
           isRequired: false,
+          choicesType: ChoicesTypes.CHECKBOX,
+          choices: []
         },
       ];
     });
@@ -115,6 +122,7 @@ export function CreateSurvey(props) {
           return {
             ...question,
             [key]: value,
+
           };
         }
         return question;
@@ -122,8 +130,41 @@ export function CreateSurvey(props) {
     });
   }
 
-  function handleAddChoice() {
+  function handleAddChoice(index) {
+    setQuestionList((previousQuestionList) => {
+      return previousQuestionList.map((question, questionIndex) => {
+        if (questionIndex === index) {
+          return {
+            ...question,
+            choices: [
+                ...question.choices,
+                ""
+            ],
+          };
+        }
+        return question;
+      });
+    });
+  }
 
+  function handleChangeOnChoice(index, indexChoice, value) {
+    setQuestionList((previousQuestionList) => {
+      return previousQuestionList.map((question, questionIndex) => {
+        if (questionIndex === index) {
+          return {
+            ...question,
+            choices: question.choices.map((choice, i) => {
+              if(i === indexChoice) {
+                return value;
+              }
+              return choice;
+            })
+
+          };
+        }
+        return question;
+      });
+    });
   }
 
   return (
@@ -173,24 +214,58 @@ export function CreateSurvey(props) {
                           }
                           type="text"
                       />
-                      <FormControlLabel sx={{userSelect: "none"}} control={<Checkbox
-                          id={`question.${index}`}
-                          checked={question.isRequired}
-                          onChange={(event) =>
-                              handleChangeOnQuestion(
-                                  "isRequired",
-                                  index,
-                                  event.target.checked
-                              )
-                          }
-                          type="checkbox"
-                      />} label="Rendre la question obligatoire" />
+                      <Stack direction={"row"}>
+                        <FormControlLabel sx={{userSelect: "none"}} control={<Checkbox
+                            id={`question.${index}`}
+                            checked={question.isRequired}
+                            onChange={(event) =>
+                                handleChangeOnQuestion(
+                                    "isRequired",
+                                    index,
+                                    event.target.checked
+                                )
+                            }
+                            type="checkbox"
+                        />} label="Rendre la question obligatoire" />
+                        <RadioGroup
+                            aria-label="type"
+                            name="radio-buttons-group"
+                            value={question.choicesType}
+                            onChange={(event, value) => {
+                              handleChangeOnQuestion("choicesType", index, value);
+                            }}
+                        ><Stack direction={"row"}>
+                          <FormControlLabel value={ChoicesTypes.CHECKBOX} control={<Radio />} label={ChoicesTypes.CHECKBOX} />
+                          <FormControlLabel value={ChoicesTypes.RADIO} control={<Radio />} label={ChoicesTypes.RADIO} />
+                        </Stack>
+                        </RadioGroup>
+                      </Stack>
+
                       {question.type === QuestionTypes.CHOIX_MULTIPLE &&
-                              <Stack direction="row">
-                                <Button variant="outlined" onClick={handleAddChoice}>
-                                  Ajouter un choix
-                                </Button>
-                              </Stack>
+                          <>
+                            <Stack direction="row">
+                              {question.choices.map((choice, indexChoice) => {
+                                return (
+                                    <TextField
+                                        fullWidth
+                                        label="Entrez le choix"
+                                        value={choice}
+                                        type="text"
+                                        key={`choice.${indexChoice}`}
+                                        onChange={(event) => {
+                                          handleChangeOnChoice(index, indexChoice, event.target.value);
+                                        }}
+                                    />
+                                )
+                              })}
+                            </Stack>
+                            <Button variant="outlined" onClick={() => {
+                              handleAddChoice(index)
+                            }
+                            }>
+                              Ajouter un choix
+                            </Button>
+                          </>
                       }
                     </Stack>
                   </Card>
