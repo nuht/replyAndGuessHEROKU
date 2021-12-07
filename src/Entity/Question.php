@@ -44,6 +44,18 @@ class Question
      */
     #[Groups(["survey:write", "survey:read"])]
     private $choices = [];
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    #[Groups(["survey:write", "survey:read"])]
+    private $choicesType;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    #[Groups(["survey:write", "survey:read"])]
+    private $type;
     
     public function __construct()
     {
@@ -98,6 +110,30 @@ class Question
     public function setChoices(array $choices): self
     {
         $this->choices = $choices;
+
+        return $this;
+    }
+
+    public function getChoicesType(): ?string
+    {
+        return $this->choicesType;
+    }
+
+    public function setChoicesType(string $choicesType): self
+    {
+        $this->choicesType = $choicesType;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

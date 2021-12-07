@@ -249,10 +249,10 @@ Merci d’avance pour votre aide.");
             $questionElement = new Question();
             $questionElement->setSurvey($survey);
             $questionElement->setChoices([
-                'question_type' => $question['question_type'],
-                'choices_type' => $question['type'],
                 'choices' => $question['choice']
             ]);
+            $questionElement->setType($question['question_type']);
+            $questionElement->setChoicesType($question['type']);
             $questionElement->setText($question['text']);
             $questionElement->setIsRequired($question['is_required']);
             $manager->persist($questionElement);

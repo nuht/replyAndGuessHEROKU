@@ -34,17 +34,18 @@ CreateSurvey.propTypes = {
 };
 
 function mapToSurveyApi(param) {
+  console.log(param);
   return {
     title: param.title,
     description: param.description,
-    user: "api/users/" + param.user,
-    company: "api/companies/" + param.companyId,
+    company: "api/companies/" + param.company,
     questions: param.questionList.map((question) => {
       return {
-          choicesType: question.choicesType,
           text: question.text,
           isRequired: question.isRequired,
-          choices: question.choices
+          choices: question.choices,
+          choicesType: question.choicesType,
+          type: question.type
         }
     })
   };
@@ -95,6 +96,10 @@ export function CreateSurvey(props) {
       return;
     }
 
+    console.log(descriptionRef);
+    console.log(titleRef.current.value);
+    console.log(descriptionRef.current.value);
+
     fetch(`${process.env.API_URL}/api/surveys`, {
       method: "POST",
       headers: {
@@ -103,7 +108,6 @@ export function CreateSurvey(props) {
       body: JSON.stringify(mapToSurveyApi({
         title: titleRef.current.value,
         description: descriptionRef.current.value,
-        user: currentUser.id,
         company: currentUser.companyId,
         questionList
       })),
@@ -125,11 +129,11 @@ export function CreateSurvey(props) {
       return [
         ...previousQuestionList,
         {
-          title: "",
-          type: QuestionTypes.OUVERTE,
+          text: "",
           isRequired: false,
+          choices: [],
           choicesType: ChoicesTypes.CHECKBOX,
-          choices: []
+          type: QuestionTypes.OUVERTE
         },
       ];
     });
@@ -142,7 +146,6 @@ export function CreateSurvey(props) {
           return {
             ...question,
             [key]: value,
-
           };
         }
         return question;
@@ -199,7 +202,7 @@ export function CreateSurvey(props) {
             aria-label="modifier description sondage"
             maxRows="10"
             minRows="4"
-            ref={descriptionRef}
+            inputRef={descriptionRef}
             label="Entrez une description"
             multiline
           />
@@ -228,9 +231,9 @@ export function CreateSurvey(props) {
                           error={formErrors.questions}
                           fullWidth
                           label="Entrez la question"
-                          value={question.title}
+                          value={question.text}
                           onChange={(event) =>
-                              handleChangeOnQuestion("title", index, event.target.value)
+                              handleChangeOnQuestion("text", index, event.target.value)
                           }
                           type="text"
                       />
