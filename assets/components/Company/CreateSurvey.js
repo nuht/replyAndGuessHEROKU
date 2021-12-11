@@ -17,8 +17,8 @@ import PropTypes from "prop-types";
 import {SurveyLayout} from "../Survey/style";
 import {useUserContext} from "../../user-context";
 import {mapToSurveyApi} from "../../services/api/api.mapper";
-import {isFormValid} from "./IsFormValid";
 import {ChoicesTypes, QuestionTypes} from "../../services/formValidation/types";
+import {isFormValid} from "../../services/formValidation/createSurveyValidation";
 
 CreateSurvey.propTypes = {
   history: PropTypes.object.isRequired,
@@ -188,9 +188,9 @@ export function CreateSurvey(props) {
                         <FormControlLabel value={QuestionTypes.CHOIX_MULTIPLE} control={<Radio />} label="Question à choix multiple" />
                       </RadioGroup>
                     <Stack spacing={2}>
-                      {formErrors.questions && formErrors.questions[index] && formErrors.questions[index].title && <Alert severity="error">{formErrors.questions[index].title}</Alert>}
+                      {formErrors.questions && formErrors.questions[index] && <Alert severity="error">{formErrors.questions[index]}</Alert>}
                       <TextField
-                          error={formErrors.questions && formErrors.questions[index] && !!formErrors.questions[index].title}
+                          error={formErrors.questions && !!formErrors.questions[index]}
                           fullWidth
                           label="Entrez la question"
                           value={question.text}
@@ -234,9 +234,9 @@ export function CreateSurvey(props) {
                             {question.choices.map((choice, indexChoice) => {
                               return (
                                   <Stack spacing={2} key={`choice.${indexChoice}`}>
-                                    {formErrors.questions && formErrors.questions[index] && formErrors.questions[index].choices && formErrors.questions[index].choices[indexChoice] && <Alert severity="error">{formErrors.questions[index].choices[indexChoice]}</Alert>}
+                                    {formErrors.choices && formErrors.choices[`${index}.${indexChoice}`] && <Alert severity="error">{formErrors.choices[`${index}.${indexChoice}`]}</Alert>}
                                     <TextField
-                                        error={formErrors.questions && formErrors.questions[index] && formErrors.questions[index].choices && !!formErrors.questions[index].choices[indexChoice]}
+                                        error={formErrors.choices && !!formErrors.choices[`${index}.${indexChoice}`]}
                                         fullWidth
                                         label="Entrez le choix"
                                         value={choice}
