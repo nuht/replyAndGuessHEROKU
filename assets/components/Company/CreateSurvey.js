@@ -16,40 +16,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PropTypes from "prop-types";
 import {SurveyLayout} from "../Survey/style";
 import {useUserContext} from "../../user-context";
-
-const QuestionTypes = {
-  OUVERTE : "ouverte",
-  CHOIX_MULTIPLE : "multiple"
-};
-
-const ChoicesTypes = {
-  RADIO : "radio",
-  CHECKBOX : "checkbox"
-};
+import {mapToSurveyApi} from "../../services/api/api.mapper";
+import {isFormValid} from "./IsFormValid";
+import {ChoicesTypes, QuestionTypes} from "../../services/formValidation/types";
 
 CreateSurvey.propTypes = {
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
 };
-
-function mapToSurveyApi(param) {
-  console.log(param);
-  return {
-    title: param.title,
-    description: param.description,
-    company: "api/companies/" + param.company,
-    questions: param.questionList.map((question) => {
-      return {
-          text: question.text,
-          isRequired: question.isRequired,
-          choices: question.choices,
-          choicesType: question.choicesType,
-          type: question.type
-        }
-    })
-  };
-}
 
 export function CreateSurvey(props) {
   const currentUser = useUserContext();
@@ -59,37 +34,11 @@ export function CreateSurvey(props) {
   const [questionList, setQuestionList] = React.useState([]);
   const [formErrors, setFormErrors] = React.useState({});
 
-  /*@Todo Rajouter la partie validations des choices ou non parce qu'on peut mettre des string vide*/
-
-  function isFormValid() {
-    let errors = {};
-    if (titleRef.current.value === "") {
-        errors.title = "Un titre doit être renseigné.";
-    }
-    if (descriptionRef.current.value === "") {
-        errors.description = "Une description doit être renseignée.";
-    }
-    questionList.map((question, index) => {
-      if(question.title === ""){
-        if(errors.questions) {
-          errors.questions[index] = `Un titre doit être renseigné sur la question ${index+1}`;
-        } else {
-          errors.questions = {};
-          errors.questions[index] = `Un titre doit être renseigné sur la question ${index+1}`;
-        }
-      }
-    });
-
-    return {
-      valid : Object.keys(errors).length === 0,
-      errors
-    };
-  }
 
   function handleOnSubmit(event) {
     event.preventDefault();
 
-    let formValidationResult = isFormValid();
+    let formValidationResult = isFormValid(titleRef.current.value, descriptionRef.current.value, questionList);
 
     if (formValidationResult.valid === false) {
       setFormErrors(formValidationResult.errors);
@@ -124,7 +73,6 @@ export function CreateSurvey(props) {
   }
 
   function handleAddQuestion() {
-    /*type, text, isRequired, json choices*/
     setQuestionList((previousQuestionList) => {
       return [
         ...previousQuestionList,
@@ -206,9 +154,10 @@ export function CreateSurvey(props) {
       <form onSubmit={handleOnSubmit}>
         <Stack spacing={1}>
           {formErrors.title && <Alert severity="error">{formErrors.title}</Alert>}
-          <TextField error={formErrors.title} inputRef={titleRef} label="Entrez un titre" />
+          <TextField error={!!formErrors.title} inputRef={titleRef} label="Entrez un titre" />
           {formErrors.description && <Alert severity="error">{formErrors.description}</Alert>}
           <TextField
+            error={!!formErrors.description}
             aria-label="modifier description sondage"
             maxRows="10"
             minRows="4"
@@ -239,9 +188,9 @@ export function CreateSurvey(props) {
                         <FormControlLabel value={QuestionTypes.CHOIX_MULTIPLE} control={<Radio />} label="Question à choix multiple" />
                       </RadioGroup>
                     <Stack spacing={2}>
-                      {formErrors.questions && formErrors.questions[index] && <Alert severity="error">{formErrors.questions[index]}</Alert>}
+                      {formErrors.questions && formErrors.questions[index] && formErrors.questions[index].title && <Alert severity="error">{formErrors.questions[index].title}</Alert>}
                       <TextField
-                          error={formErrors.questions}
+                          error={formErrors.questions && formErrors.questions[index] && !!formErrors.questions[index].title}
                           fullWidth
                           label="Entrez la question"
                           value={question.text}
@@ -282,22 +231,23 @@ export function CreateSurvey(props) {
 
                       {question.type === QuestionTypes.CHOIX_MULTIPLE &&
                           <>
-                            <Stack direction="row">
-                              {question.choices.map((choice, indexChoice) => {
-                                return (
+                            {question.choices.map((choice, indexChoice) => {
+                              return (
+                                  <Stack spacing={2} key={`choice.${indexChoice}`}>
+                                    {formErrors.questions && formErrors.questions[index] && formErrors.questions[index].choices && formErrors.questions[index].choices[indexChoice] && <Alert severity="error">{formErrors.questions[index].choices[indexChoice]}</Alert>}
                                     <TextField
+                                        error={formErrors.questions && formErrors.questions[index] && formErrors.questions[index].choices && !!formErrors.questions[index].choices[indexChoice]}
                                         fullWidth
                                         label="Entrez le choix"
                                         value={choice}
                                         type="text"
-                                        key={`choice.${indexChoice}`}
                                         onChange={(event) => {
                                           handleChangeOnChoice(index, indexChoice, event.target.value);
                                         }}
                                     />
-                                )
-                              })}
-                            </Stack>
+                                  </Stack>
+                              )
+                            })}
                             <Button variant="outlined" onClick={() => {
                               handleAddChoice(index)
                             }
