@@ -190,6 +190,16 @@ export function CreateSurvey(props) {
     });
   }
 
+  function handleDeleteQuestion(index) {
+    setQuestionList((previousQuestionList) => {
+      return [
+        ...previousQuestionList.slice(0, index),
+        ...previousQuestionList.slice(index + 1)
+      ];
+    });
+
+  }
+
   return (
     <SurveyLayout>
       {info}
@@ -208,9 +218,12 @@ export function CreateSurvey(props) {
           />
           <Stack spacing={3}>
             {questionList.map((question, index) => {
+              if(question === undefined) return;
               return (
                   <Card sx={{padding: "10px 20px", position: "relative"}} key={`${index}`}>
-                      <IconButton color={"primary"} sx={{position: "absolute", right: 0, top: 0}} aria-label="delete">
+                      <IconButton color={"primary"} sx={{position: "absolute", right: 0, top: 0}} aria-label="delete" onClick={() => {
+                        handleDeleteQuestion(index);
+                      }}>
                         <DeleteIcon />
                       </IconButton>
                       <FormLabel component="legend">Type de question</FormLabel>
@@ -250,18 +263,21 @@ export function CreateSurvey(props) {
                             }
                             type="checkbox"
                         />} label="Rendre la question obligatoire" />
-                        <RadioGroup
-                            aria-label="type"
-                            name="radio-buttons-group"
-                            value={question.choicesType}
-                            onChange={(event, value) => {
-                              handleChangeOnQuestion("choicesType", index, value);
-                            }}
-                        ><Stack direction={"row"}>
-                          <FormControlLabel value={ChoicesTypes.CHECKBOX} control={<Radio />} label={ChoicesTypes.CHECKBOX} />
-                          <FormControlLabel value={ChoicesTypes.RADIO} control={<Radio />} label={ChoicesTypes.RADIO} />
-                        </Stack>
-                        </RadioGroup>
+
+                        {question.type === QuestionTypes.CHOIX_MULTIPLE &&
+                          <RadioGroup
+                              aria-label="type"
+                              name="radio-buttons-group"
+                              value={question.choicesType}
+                              onChange={(event, value) => {
+                                handleChangeOnQuestion("choicesType", index, value);
+                              }}
+                          ><Stack direction={"row"}>
+                            <FormControlLabel value={ChoicesTypes.CHECKBOX} control={<Radio />} label={ChoicesTypes.CHECKBOX} />
+                            <FormControlLabel value={ChoicesTypes.RADIO} control={<Radio />} label={ChoicesTypes.RADIO} />
+                          </Stack>
+                          </RadioGroup>
+                        }
                       </Stack>
 
                       {question.type === QuestionTypes.CHOIX_MULTIPLE &&
