@@ -22,7 +22,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
         "get" => [
             "security" => "is_granted('CAN_ANSWER', object)",
             "security_message" => "Vous pouvez seulement répondre une seule fois par sondage.",
-        ]
+        ],
+        "put" => ['method' => 'put']
     ]
 )]
 class Survey

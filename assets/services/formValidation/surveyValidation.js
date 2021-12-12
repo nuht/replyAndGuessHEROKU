@@ -1,6 +1,6 @@
 import {QuestionTypes} from "./types";
 
-export function isFormValid(title, description, questionList) {
+export function formValidation(title, description, questionList) {
 
     let errors = {};
 

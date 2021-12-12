@@ -28,7 +28,7 @@ import { NotFound } from "./components/NotFound";
 import { Survey } from "./components/Survey/Survey";
 import PropTypes from "prop-types";
 import { SurveyList } from "./components/SurveyList/SurveyList";
-import {UserContext} from "./user-context";
+import { UserContext } from "./user-context";
 
 App.propTypes = {
   history: PropTypes.object.isRequired,
@@ -62,10 +62,10 @@ function App(props) {
       })
       .then((body) => {
         setUser({
-          id : body.user.id,
+          id: body.user.id,
           email: body.user.email,
           companyId: body.user.company.id,
-          roles: body.user.role
+          roles: body.user.role,
         });
       });
   }
@@ -86,24 +86,14 @@ function App(props) {
   }, []);
 
   return (
-    <UserContext.Provider value = {user}>
+    <UserContext.Provider value={user}>
       <Navigation roles={user && user.roles ? user.roles : []} />
       <Container maxWidth="md">
         <Switch>
-          <Route
-            path={["/", "/surveys"]}
-            exact
-            component = {SurveyList}/>
-          <Route
-            path="/company/createSurvey"
-            component = {CreateSurvey}/>
-          <Route
-            path="/survey/:id"
-            component= {Survey}/>
-          <Route
-            path="/login"
-            exact
-            component={Login}/>;
+          <Route path={["/", "/surveys"]} exact component={SurveyList} />
+          <Route path="/company/createSurvey" component={CreateSurvey} />
+          <Route path="/survey/:id" component={Survey} />
+          <Route path="/login" exact component={Login} />;
           <Route path="/questions">
             <h1>Liste des questions</h1>
           </Route>
