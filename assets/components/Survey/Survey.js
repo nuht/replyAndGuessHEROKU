@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { SurveyEdit } from "./SurveyEdit";
 import { Button, CircularProgress } from "@mui/material";
 import { SurveyStatus } from "../SurveyStatus";
+import { mapSurveyApiToSurvey } from "../../domain/survey";
 
 Survey.propTypes = {
   history: PropTypes.object.isRequired,
@@ -24,15 +25,8 @@ export function Survey(props) {
 
         return response.json();
       })
-      /* @TODO faire un mapper */
       .then((body) => {
-        setSurvey({
-          id: body.id,
-          title: body.title,
-          description: body.description,
-          status: body.status,
-          questions: body.questions,
-        });
+        setSurvey(mapSurveyApiToSurvey(body));
       });
   }, []);
 

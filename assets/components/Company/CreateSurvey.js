@@ -7,12 +7,14 @@ import {
   FormControlLabel,
   FormLabel,
   IconButton,
+  InputAdornment,
   Radio,
   RadioGroup,
   Stack,
   TextField,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CloseIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
 import { SurveyLayout } from "../Survey/style";
 import { useUserContext } from "../../user-context";
@@ -144,6 +146,22 @@ export function CreateSurvey(props) {
         ...previousQuestionList.slice(0, index),
         ...previousQuestionList.slice(index + 1),
       ];
+    });
+  }
+
+  function handleDeleteChoice(index, indexChoice) {
+    setQuestionList((previousQuestionList) => {
+      return previousQuestionList.map((question, questionIndex) => {
+        if (questionIndex === index) {
+          return {
+            ...question,
+            choices: [
+              ...question.choices.slice(0, indexChoice),
+              ...question.choices.slice(indexChoice + 1),
+            ],
+          };
+        }
+      });
     });
   }
 
@@ -310,6 +328,20 @@ export function CreateSurvey(props) {
                                     indexChoice,
                                     event.target.value
                                   );
+                                }}
+                                InputProps={{
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <IconButton
+                                        aria-label="deleteChoice"
+                                        onClick={() =>
+                                          handleDeleteChoice(index, indexChoice)
+                                        }
+                                      >
+                                        <CloseIcon />
+                                      </IconButton>
+                                    </InputAdornment>
+                                  ),
                                 }}
                               />
                             </Stack>

@@ -22,7 +22,7 @@ export function mapToEditSurveyApi(param) {
     company: "api/companies/" + param.company,
     questions: param.questionList.map((question) => {
       return {
-        ...(question["@id"] && { "@id": question["@id"] }),
+        ...(question.id && { "@id": question.uri }),
         text: question.text,
         isRequired: question.isRequired,
         choices: question.choices,
