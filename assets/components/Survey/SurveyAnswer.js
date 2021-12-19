@@ -4,16 +4,15 @@ import {
   Alert,
   Button,
   Card,
-  Checkbox,
   CircularProgress,
   FormControlLabel,
-  FormLabel,
-  IconButton,
   Radio,
   RadioGroup,
   Stack,
   TextField,
   Typography,
+  Checkbox,
+  FormLabel,
 } from "@mui/material";
 import { mapSurveyApiToSurvey } from "../../domain/survey";
 import {
@@ -21,7 +20,6 @@ import {
   QuestionTypes,
 } from "../../services/formValidation/types";
 import { SurveyLayout } from "./style";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 SurveyAnswer.propTypes = {
   history: PropTypes.object.isRequired,
@@ -81,9 +79,39 @@ export function SurveyAnswer(props) {
                       </Alert>
                     )}
 
-                    <Typography variant="body1" gutterBottom>
+                    <FormLabel required={question.isRequired}>
                       {question.text}
-                    </Typography>
+                    </FormLabel>
+                    {question.type === QuestionTypes.OUVERTE && (
+                      <TextField
+                        error={
+                          formErrors.questions && !!formErrors.questions[index]
+                        }
+                        maxRows="10"
+                        minRows="4"
+                        label="Entrez la réponse à la question"
+                        multiline
+                      />
+                    )}
+
+                    {question.type === QuestionTypes.CHOIX_MULTIPLE && (
+                      <RadioGroup>
+                        {question.choices.map((choice, indexChoice) => (
+                          <FormControlLabel
+                            value={choice}
+                            key={indexChoice}
+                            control={
+                              question.choicesType === ChoicesTypes.RADIO ? (
+                                <Radio />
+                              ) : (
+                                <Checkbox />
+                              )
+                            }
+                            label={choice}
+                          />
+                        ))}
+                      </RadioGroup>
+                    )}
                   </Stack>
                 </Card>
               );

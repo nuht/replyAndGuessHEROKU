@@ -1,3 +1,5 @@
+import { ChoicesTypes } from "../services/formValidation/types";
+
 export function mapSurveyApiToSurvey(surveyApi) {
   return {
     id: surveyApi.id,
@@ -11,7 +13,10 @@ export function mapSurveyApiToSurvey(surveyApi) {
         text: questionApi.text,
         isRequired: questionApi.isRequired,
         choices: questionApi.choices,
-        choicesType: questionApi.choicesType,
+        choicesType:
+          questionApi.choicesType === "checkboxes"
+            ? ChoicesTypes.CHECKBOX
+            : ChoicesTypes.RADIO,
         type: questionApi.type,
       };
     }),
