@@ -28,6 +28,7 @@ SurveyAnswer.propTypes = {
 };
 export function SurveyAnswer(props) {
   const [survey, setSurvey] = React.useState(null);
+  const [surveyResult, setSurveyResult] = React.useState({});
   const [formErrors, setFormErrors] = React.useState({});
   React.useEffect(() => {
     fetch(`${process.env.API_URL}/api/surveys/` + props.match.params.id)
@@ -42,7 +43,18 @@ export function SurveyAnswer(props) {
         return response.json();
       })
       .then((body) => {
-        setSurvey(mapSurveyApiToSurvey(body));
+        let s = mapSurveyApiToSurvey(body);
+        setSurveyResult(() => {
+          let newSurveyResult = {};
+          s.questions.forEach((question) => {
+            newSurveyResult[question.text] = {
+              value: "",
+              isRequired: question.isRequired,
+            };
+          });
+          return newSurveyResult;
+        });
+        setSurvey(s);
       });
   }, []);
 
@@ -91,6 +103,18 @@ export function SurveyAnswer(props) {
                         minRows="4"
                         label="Entrez la réponse à la question"
                         multiline
+                        value={surveyResult[question.text].value}
+                        onChange={(event) =>
+                          setSurveyResult((previousSurveyResult) => {
+                            return {
+                              ...previousSurveyResult,
+                              [question.text]: {
+                                ...previousSurveyResult[question.text],
+                                value: event.target.value,
+                              },
+                            };
+                          })
+                        }
                       />
                     )}
 
