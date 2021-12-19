@@ -5,11 +5,14 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ResultRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ResultRepository::class)
  */
-#[ApiResource]
+#[ApiResource(
+    denormalizationContext: ["groups" => ["result:write"]]
+)]
 class Result
 {
     /**
@@ -27,6 +30,7 @@ class Result
     /**
      * @ORM\Column(type="json", nullable=true)
      */
+    #[Groups(["result:write"])]
     private $value = [];
 
     /**
@@ -38,12 +42,14 @@ class Result
      * @ORM\ManyToOne(targetEntity=Survey::class, inversedBy="results")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(["result:write"])]
     private $survey;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="results")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(["result:write"])]
     private $user;
 
     public function __construct()
@@ -104,12 +110,12 @@ class Result
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUserId(?User $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 

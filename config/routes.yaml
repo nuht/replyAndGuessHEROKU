@@ -16,3 +16,8 @@ api_logout:
 api_me:
   path: /api/me
   controller: App\Controller\ApiController::me
+
+
+api_answer_survey:
+  path: /api/answer_survey
+  controller: App\Controller\ApiController::answerSurvey

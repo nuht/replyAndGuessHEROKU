@@ -27,7 +27,7 @@ export function mapToEditSurveyApi(param) {
         isRequired: question.isRequired,
         choices: question.choices,
         choicesType: question.choicesType,
-        type: question.type,
+        type: question.type
       };
     }),
   };
