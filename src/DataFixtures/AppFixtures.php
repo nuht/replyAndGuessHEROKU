@@ -248,9 +248,9 @@ Merci d’avance pour votre aide.");
         foreach ($arrayQuestion as $question) {
             $questionElement = new Question();
             $questionElement->setSurvey($survey);
-            $questionElement->setChoices([
-                'choices' => $question['choice']
-            ]);
+            $questionElement->setChoices(
+                $question['choice']
+            );
             $questionElement->setType($question['question_type']);
             $questionElement->setChoicesType($question['type']);
             $questionElement->setText($question['text']);

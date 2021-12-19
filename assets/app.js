@@ -29,6 +29,13 @@ import { Survey } from "./components/Survey/Survey";
 import PropTypes from "prop-types";
 import { SurveyList } from "./components/SurveyList/SurveyList";
 import { UserContext } from "./user-context";
+import {
+  HydraAdmin,
+  AdminGuesser,
+  hydraDataProvider,
+  hydraSchemaAnalyzer,
+} from "@api-platform/admin";
+import { SurveyAnswer } from "./components/Survey/SurveyAnswer";
 
 App.propTypes = {
   history: PropTypes.object.isRequired,
@@ -92,7 +99,8 @@ function App(props) {
         <Switch>
           <Route path={["/", "/surveys"]} exact component={SurveyList} />
           <Route path="/company/createSurvey" component={CreateSurvey} />
-          <Route path="/survey/:id" component={Survey} />
+          <Route path="/survey/:id/answer" exact component={SurveyAnswer} />
+          <Route path="/survey/:id" exact component={Survey} />
           <Route path="/login" exact component={Login} />;
           <Route path="/questions">
             <h1>Liste des questions</h1>
