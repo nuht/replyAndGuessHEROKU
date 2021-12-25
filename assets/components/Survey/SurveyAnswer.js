@@ -47,8 +47,12 @@ export function SurveyAnswer(props) {
         setSurveyResult(() => {
           let newSurveyResult = {};
           s.questions.forEach((question) => {
-            newSurveyResult[question.text] = {
-              value: "",
+            newSurveyResult[question.id] = {
+              value:
+                question.type === QuestionTypes.CHOIX_MULTIPLE &&
+                question.choicesType === ChoicesTypes.CHECKBOX
+                  ? []
+                  : "",
               isRequired: question.isRequired,
             };
           });
@@ -64,11 +68,35 @@ export function SurveyAnswer(props) {
 
   function handleSubmit() {}
 
-  function handleOnSubmit() {}
+  function handleOnChangeOnToto(questionId, type, value) {
+    console.log(value);
+    setSurveyResult((previousSurveyResult) => {
+      let oldValue = previousSurveyResult[questionId].value;
+      let newValue = value;
+      if (type === ChoicesTypes.CHECKBOX) {
+        if (oldValue.includes(newValue)) {
+          let index = oldValue.findIndex((element) => element === newValue);
+
+          newValue = [
+            ...oldValue.slice(0, index),
+            ...oldValue.slice(index + 1),
+          ];
+          console.log(index, newValue);
+        } else {
+          newValue = oldValue.concat([newValue]);
+        }
+      }
+
+      return {
+        ...previousSurveyResult,
+        [questionId]: { ...previousSurveyResult[questionId], value: newValue },
+      };
+    });
+  }
 
   return (
     <SurveyLayout>
-      <form onSubmit={handleOnSubmit}>
+      <form onSubmit={handleSubmit}>
         <Stack spacing={1}>
           <Typography variant="h4" gutterBottom>
             {survey.title}
@@ -77,19 +105,19 @@ export function SurveyAnswer(props) {
             {survey.description}
           </Typography>
           <Stack spacing={3}>
-            {survey.questions.map((question, index) => {
-              console.log(question);
+            {survey.questions.map((question, questionIndex) => {
               return (
                 <Card
                   sx={{ padding: "10px 20px", position: "relative" }}
-                  key={`${index}`}
+                  key={question.id}
                 >
                   <Stack spacing={2}>
-                    {formErrors.questions && formErrors.questions[index] && (
-                      <Alert severity="error">
-                        {formErrors.questions[index]}
-                      </Alert>
-                    )}
+                    {formErrors.questions &&
+                      formErrors.questions[questionIndex] && (
+                        <Alert severity="error">
+                          {formErrors.questions[questionIndex]}
+                        </Alert>
+                      )}
 
                     <FormLabel required={question.isRequired}>
                       {question.text}
@@ -97,7 +125,8 @@ export function SurveyAnswer(props) {
                     {question.type === QuestionTypes.OUVERTE && (
                       <TextField
                         error={
-                          formErrors.questions && !!formErrors.questions[index]
+                          formErrors.questions &&
+                          !!formErrors.questions[questionIndex]
                         }
                         maxRows="10"
                         minRows="4"
@@ -108,8 +137,10 @@ export function SurveyAnswer(props) {
                           setSurveyResult((previousSurveyResult) => {
                             return {
                               ...previousSurveyResult,
-                              [question.text]: {
-                                ...previousSurveyResult[question.text],
+                              [question.text + questionIndex]: {
+                                ...previousSurveyResult[
+                                  question.text + questionIndex
+                                ],
                                 value: event.target.value,
                               },
                             };
@@ -122,6 +153,13 @@ export function SurveyAnswer(props) {
                       <RadioGroup>
                         {question.choices.map((choice, indexChoice) => (
                           <FormControlLabel
+                            onChange={(event) => {
+                              handleOnChangeOnToto(
+                                question.id,
+                                question.choicesType,
+                                event.target.value
+                              );
+                            }}
                             value={choice}
                             key={indexChoice}
                             control={
