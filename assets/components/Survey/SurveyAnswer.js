@@ -13,6 +13,7 @@ import {
   Typography,
   Checkbox,
   FormLabel,
+  Snackbar,
 } from "@mui/material";
 import { mapSurveyApiToSurvey } from "../../domain/survey";
 import {
@@ -20,16 +21,26 @@ import {
   QuestionTypes,
 } from "../../services/formValidation/types";
 import { SurveyLayout } from "./style";
+import { red } from "@mui/material/colors";
 
 SurveyAnswer.propTypes = {
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
 };
+
+function getMessageError(type) {
+  if (type === QuestionTypes.CHOIX_MULTIPLE) {
+    return "choix multiple";
+  } else return "question ouverte";
+}
+
 export function SurveyAnswer(props) {
   const [survey, setSurvey] = React.useState(null);
   const [surveyResult, setSurveyResult] = React.useState({});
   const [formErrors, setFormErrors] = React.useState({});
+  const [showAlert, setShowAlert] = React.useState(false);
+
   React.useEffect(() => {
     fetch(`${process.env.API_URL}/api/surveys/` + props.match.params.id)
       .then((response) => {
@@ -66,10 +77,36 @@ export function SurveyAnswer(props) {
     return <CircularProgress />;
   }
 
-  function handleSubmit() {}
+  function handleSubmit() {
+    let newErrors = {};
+    for (const questionId in surveyResult) {
+      if (surveyResult[questionId].isRequired) {
+        if (
+          Array.isArray(surveyResult[questionId].value) &&
+          surveyResult[questionId].value.length === 0
+        ) {
+          newErrors[questionId] = true;
+        } else {
+          if (surveyResult[questionId].value === "") {
+            newErrors[questionId] = true;
+          }
+        }
+      }
+      /*console.log(`${questionId}:`, surveyResult[questionId]);*/
+    }
+
+    /*Vérifier si l'objec new error a au moins une clé, si au moins une clé = invalide et il faut return pur court circuiter la fc et set formError*/
+    if (Object.keys(newErrors).length > 0) {
+      setShowAlert(true);
+      console.log(formErrors);
+      setFormErrors(newErrors);
+      return;
+    } else {
+      setFormErrors({});
+    }
+  }
 
   function handleOnChangeOnToto(questionId, type, value) {
-    console.log(value);
     setSurveyResult((previousSurveyResult) => {
       let oldValue = previousSurveyResult[questionId].value;
       let newValue = value;
@@ -96,6 +133,23 @@ export function SurveyAnswer(props) {
 
   return (
     <SurveyLayout>
+      <Snackbar
+        open={showAlert}
+        onClose={() => setShowAlert(false)}
+        autoHideDuration={60000}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+      >
+        <Alert
+          severity="error"
+          onClose={() => setShowAlert(false)}
+          sx={{ width: "100%" }}
+        >
+          Il y a une erreur
+        </Alert>
+      </Snackbar>
       <form onSubmit={handleSubmit}>
         <Stack spacing={1}>
           <Typography variant="h4" gutterBottom>
@@ -105,20 +159,25 @@ export function SurveyAnswer(props) {
             {survey.description}
           </Typography>
           <Stack spacing={3}>
-            {survey.questions.map((question, questionIndex) => {
+            {survey.questions.map((question) => {
               return (
                 <Card
-                  sx={{ padding: "10px 20px", position: "relative" }}
+                  sx={{
+                    padding: "10px 20px",
+                    position: "relative",
+                    border: `2px solid`,
+                    borderColor: formErrors[question.id]
+                      ? red[50]
+                      : "transparent",
+                  }}
                   key={question.id}
                 >
                   <Stack spacing={2}>
-                    {formErrors.questions &&
-                      formErrors.questions[questionIndex] && (
-                        <Alert severity="error">
-                          {formErrors.questions[questionIndex]}
-                        </Alert>
-                      )}
-
+                    {formErrors[question.id] && (
+                      <Alert severity="error">
+                        {getMessageError(question.type)}
+                      </Alert>
+                    )}
                     <FormLabel required={question.isRequired}>
                       {question.text}
                     </FormLabel>
@@ -126,21 +185,19 @@ export function SurveyAnswer(props) {
                       <TextField
                         error={
                           formErrors.questions &&
-                          !!formErrors.questions[questionIndex]
+                          !!formErrors.questions[question.id]
                         }
                         maxRows="10"
                         minRows="4"
                         label="Entrez la réponse à la question"
                         multiline
-                        value={surveyResult[question.text].value}
+                        value={surveyResult[question.id].value}
                         onChange={(event) =>
                           setSurveyResult((previousSurveyResult) => {
                             return {
                               ...previousSurveyResult,
-                              [question.text + questionIndex]: {
-                                ...previousSurveyResult[
-                                  question.text + questionIndex
-                                ],
+                              [question.id]: {
+                                ...previousSurveyResult[question.id],
                                 value: event.target.value,
                               },
                             };
