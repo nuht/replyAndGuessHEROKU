@@ -22,6 +22,11 @@ import {
 } from "../../services/formValidation/types";
 import { SurveyLayout } from "./style";
 import { red } from "@mui/material/colors";
+import {
+  mapToResultApiForSurveyAnswering,
+  mapToSurveyApiForSurveyCreation,
+} from "../../services/api/api.mapper";
+import { useUserContext } from "../../user-context";
 
 SurveyAnswer.propTypes = {
   history: PropTypes.object.isRequired,
@@ -36,23 +41,29 @@ function getMessageError(type) {
 }
 
 export function SurveyAnswer(props) {
+  const currentUser = useUserContext();
+  console.log(location.search);
   const [survey, setSurvey] = React.useState(null);
   const [surveyResult, setSurveyResult] = React.useState({});
   const [formErrors, setFormErrors] = React.useState({});
   const [showAlert, setShowAlert] = React.useState(false);
 
   React.useEffect(() => {
-    fetch(`${process.env.API_URL}/api/surveys/` + props.match.params.id)
-      .then((response) => {
-        if (response.status === 401) {
-          props.history.push("/login");
-        }
-        if (response.status === 404) {
-          alert("Sondage introuvable");
-        }
+    const queryParams = new URLSearchParams(location.search);
+    const userHash = queryParams.get("userHash");
+    const surveyHash = queryParams.get("surveyHash");
 
-        return response.json();
-      })
+    fetch(`${process.env.API_URL}/api/answer_survey`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userHash: userHash,
+        surveyHash: surveyHash,
+      }),
+    })
+      .then((response) => response.json())
       .then((body) => {
         let s = mapSurveyApiToSurvey(body);
         setSurveyResult(() => {
@@ -92,17 +103,42 @@ export function SurveyAnswer(props) {
           }
         }
       }
-      /*console.log(`${questionId}:`, surveyResult[questionId]);*/
     }
 
     /*Vérifier si l'objec new error a au moins une clé, si au moins une clé = invalide et il faut return pur court circuiter la fc et set formError*/
     if (Object.keys(newErrors).length > 0) {
       setShowAlert(true);
-      console.log(formErrors);
       setFormErrors(newErrors);
       return;
     } else {
       setFormErrors({});
+      console.log(
+        mapToResultApiForSurveyAnswering({
+          surveyAnswered: surveyResult,
+          survey,
+          userId: currentUser.id,
+        })
+      );
+      fetch(`${process.env.API_URL}/api/results`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          mapToResultApiForSurveyAnswering({
+            surveyAnswered: surveyResult,
+            survey,
+            userId: currentUser.id,
+          })
+        ),
+      })
+        .then((response) => {
+          if (response.status === 201) {
+            return response.json();
+          } else {
+          }
+        })
+        .catch(() => {});
     }
   }
 
@@ -118,7 +154,6 @@ export function SurveyAnswer(props) {
             ...oldValue.slice(0, index),
             ...oldValue.slice(index + 1),
           ];
-          console.log(index, newValue);
         } else {
           newValue = oldValue.concat([newValue]);
         }

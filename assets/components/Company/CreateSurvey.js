@@ -18,7 +18,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
 import { SurveyLayout } from "../Survey/style";
 import { useUserContext } from "../../user-context";
-import { mapToSurveyApi } from "../../services/api/api.mapper";
+import { mapToSurveyApiForSurveyCreation } from "../../services/api/api.mapper";
 import {
   ChoicesTypes,
   QuestionTypes,
@@ -59,7 +59,7 @@ export function CreateSurvey(props) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(
-        mapToSurveyApi({
+        mapToSurveyApiForSurveyCreation({
           title: titleRef.current.value,
           description: descriptionRef.current.value,
           company: currentUser.companyId,

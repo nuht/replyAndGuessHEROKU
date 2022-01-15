@@ -21,7 +21,7 @@ import {
 import { SurveyLayout } from "./style";
 import { useUserContext } from "../../user-context";
 import { formValidation } from "../../services/formValidation/surveyValidation";
-import { mapToEditSurveyApi } from "../../services/api/api.mapper";
+import { mapToSurveyApiForSurveyEdition } from "../../services/api/api.mapper";
 
 SurveyEdit.propTypes = {
   survey: PropTypes.shape({
@@ -62,7 +62,7 @@ export function SurveyEdit(props) {
         "Content-Type": "application/ld+json",
       },
       body: JSON.stringify(
-        mapToEditSurveyApi({
+        mapToSurveyApiForSurveyEdition({
           title: titleRef.current.value,
           description: descriptionRef.current.value,
           company: currentUser.companyId,

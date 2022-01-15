@@ -99,7 +99,7 @@ function App(props) {
         <Switch>
           <Route path={["/", "/surveys"]} exact component={SurveyList} />
           <Route path="/company/createSurvey" component={CreateSurvey} />
-          <Route path="/survey/:id/answer" exact component={SurveyAnswer} />
+          <Route path="/answerSurvey" exact component={SurveyAnswer} />
           <Route path="/survey/:id" exact component={Survey} />
           <Route path="/login" exact component={Login} />;
           <Route path="/questions">
