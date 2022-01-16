@@ -36,6 +36,7 @@ import {
   hydraSchemaAnalyzer,
 } from "@api-platform/admin";
 import { SurveyAnswer } from "./components/Survey/SurveyAnswer";
+import { matchPath } from "react-router";
 
 App.propTypes = {
   history: PropTypes.object.isRequired,
@@ -94,7 +95,19 @@ function App(props) {
 
   return (
     <UserContext.Provider value={user}>
-      <Navigation roles={user && user.roles ? user.roles : []} />
+      <Route
+        path="/answerSurvey"
+        exact
+        render={(routeProps) => {
+          console.log(routeProps.match);
+          if (routeProps.match.path === "/answerSurvey") {
+            return null;
+          }
+
+          return <Navigation roles={user && user.roles ? user.roles : []} />;
+        }}
+      />
+
       <Container maxWidth="md">
         <Switch>
           <Route path={["/", "/surveys"]} exact component={SurveyList} />
@@ -104,9 +117,6 @@ function App(props) {
           <Route path="/login" exact component={Login} />;
           <Route path="/questions">
             <h1>Liste des questions</h1>
-          </Route>
-          <Route path="/ranking">
-            <h1>Classements</h1>
           </Route>
           <Route path="/register">
             <Register />

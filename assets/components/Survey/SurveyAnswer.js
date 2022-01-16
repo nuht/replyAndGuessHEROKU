@@ -1,19 +1,18 @@
 import React from "react";
-import PropTypes, { instanceOf } from "prop-types";
+import PropTypes from "prop-types";
 import {
   Alert,
   Button,
   Card,
-  CircularProgress,
+  Checkbox,
   FormControlLabel,
+  FormLabel,
   Radio,
   RadioGroup,
+  Snackbar,
   Stack,
   TextField,
   Typography,
-  Checkbox,
-  FormLabel,
-  Snackbar,
 } from "@mui/material";
 import { mapSurveyApiToSurvey } from "../../domain/survey";
 import {
@@ -22,11 +21,7 @@ import {
 } from "../../services/formValidation/types";
 import { SurveyLayout } from "./style";
 import { red } from "@mui/material/colors";
-import {
-  mapToResultApiForSurveyAnswering,
-  mapToSurveyApiForSurveyCreation,
-} from "../../services/api/api.mapper";
-import { useUserContext } from "../../user-context";
+import { mapToResultApiForSurveyAnswering } from "../../services/api/api.mapper";
 
 SurveyAnswer.propTypes = {
   history: PropTypes.object.isRequired,
@@ -40,8 +35,7 @@ function getMessageError(type) {
   } else return "question ouverte";
 }
 
-export function SurveyAnswer(props) {
-  const currentUser = useUserContext();
+export function SurveyAnswer() {
   const [survey, setSurvey] = React.useState(null);
   const [userIri, setUserIri] = React.useState(null);
   const [surveyResult, setSurveyResult] = React.useState({});
@@ -133,7 +127,6 @@ export function SurveyAnswer(props) {
       }
     }
 
-    /*Vérifier si l'objec new error a au moins une clé, si au moins une clé = invalide et il faut return pur court circuiter la fc et set formError*/
     if (Object.keys(newErrors).length > 0) {
       setShowAlert(true);
       setFormErrors(newErrors);

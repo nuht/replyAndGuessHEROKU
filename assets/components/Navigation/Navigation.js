@@ -87,13 +87,6 @@ export function Navigation(props) {
             <Link to="/surveys">Mes sondages</Link>
           </NavbarLinks>
         </Button>
-        <Button
-          variant={location.pathname === "/ranking" ? CONTAINED : OUTLINED}
-        >
-          <NavbarLinks active={location.pathname === "/ranking"}>
-            <Link to="/ranking">Classement</Link>
-          </NavbarLinks>
-        </Button>
         {!isLoggedIn && (
           <Button
             variant={location.pathname === "/login" ? CONTAINED : OUTLINED}
