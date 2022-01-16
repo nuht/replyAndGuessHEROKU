@@ -29,27 +29,13 @@ import { Survey } from "./components/Survey/Survey";
 import PropTypes from "prop-types";
 import { SurveyList } from "./components/SurveyList/SurveyList";
 import { UserContext } from "./user-context";
-import {
-  HydraAdmin,
-  AdminGuesser,
-  hydraDataProvider,
-  hydraSchemaAnalyzer,
-} from "@api-platform/admin";
 import { SurveyAnswer } from "./components/Survey/SurveyAnswer";
-import { matchPath } from "react-router";
 
 App.propTypes = {
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
 };
-
-/*const user = {
-  id : "",
-  email: "",
-  company_id: "",
-  roles: ""
-};*/
 
 function App(props) {
   const [user, setUser] = React.useState(null);
@@ -99,7 +85,6 @@ function App(props) {
         path="/answerSurvey"
         exact
         render={(routeProps) => {
-          console.log(routeProps.match);
           if (routeProps.match.path === "/answerSurvey") {
             return null;
           }
