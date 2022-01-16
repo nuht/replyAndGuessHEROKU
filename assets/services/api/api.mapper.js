@@ -51,6 +51,6 @@ export function mapToResultApiForSurveyAnswering(param) {
       };
     }),
     survey: `/api/surveys/${param.survey.id}`,
-    user: `/api/users/${param.userId}`,
+    user: param.userId,
   };
 }

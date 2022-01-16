@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+import PropTypes, { instanceOf } from "prop-types";
 import {
   Alert,
   Button,
@@ -42,11 +42,12 @@ function getMessageError(type) {
 
 export function SurveyAnswer(props) {
   const currentUser = useUserContext();
-  console.log(location.search);
   const [survey, setSurvey] = React.useState(null);
+  const [userIri, setUserIri] = React.useState(null);
   const [surveyResult, setSurveyResult] = React.useState({});
   const [formErrors, setFormErrors] = React.useState({});
   const [showAlert, setShowAlert] = React.useState(false);
+  const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -63,7 +64,13 @@ export function SurveyAnswer(props) {
         surveyHash: surveyHash,
       }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status !== 200) {
+          return Promise.reject(response);
+        } else {
+          return response.json();
+        }
+      })
       .then((body) => {
         let s = mapSurveyApiToSurvey(body);
         setSurveyResult(() => {
@@ -81,11 +88,32 @@ export function SurveyAnswer(props) {
           return newSurveyResult;
         });
         setSurvey(s);
+      })
+      .catch((error) => {
+        if (error instanceof Response) {
+          error.json().then((body) => {
+            setError(body);
+          });
+        }
+      });
+
+    fetch(`${process.env.API_URL}/api/get_user_iri`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userHash: userHash,
+      }),
+    })
+      .then((response) => response.json())
+      .then((body) => {
+        setUserIri(body);
       });
   }, []);
 
   if (survey === null) {
-    return <CircularProgress />;
+    return <h2>{error}</h2>;
   }
 
   function handleSubmit() {
@@ -112,13 +140,7 @@ export function SurveyAnswer(props) {
       return;
     } else {
       setFormErrors({});
-      console.log(
-        mapToResultApiForSurveyAnswering({
-          surveyAnswered: surveyResult,
-          survey,
-          userId: currentUser.id,
-        })
-      );
+
       fetch(`${process.env.API_URL}/api/results`, {
         method: "POST",
         headers: {
@@ -128,7 +150,7 @@ export function SurveyAnswer(props) {
           mapToResultApiForSurveyAnswering({
             surveyAnswered: surveyResult,
             survey,
-            userId: currentUser.id,
+            userId: userIri,
           })
         ),
       })
