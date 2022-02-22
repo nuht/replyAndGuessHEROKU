@@ -21,3 +21,11 @@ api_me:
 api_answer_survey:
   path: /api/answer_survey
   controller: App\Controller\ApiController::answerSurvey
+
+send_email:
+  path: /api/send_email
+  controller: App\Controller\ApiController:sendEmail
+
+api_get_userIri_from_hash:
+  path: /api/get_user_iri
+  controller: App\Controller\ApiController:getUserIriFromHash

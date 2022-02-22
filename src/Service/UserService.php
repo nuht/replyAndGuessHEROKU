@@ -46,7 +46,6 @@ class UserService
             $data['user']['registerDate'] = $user->getRegisterDate();
             $data['user']['lastUpdate'] = $user->getLastUpdate();
             $data['user']['lastConnectionDate'] = $user->getLastConnectionDate();
-            $data['user']['birthdate'] = $user->getBirthDate();
             $data['user']['hash'] = $user->getHash();
 
             return $data;

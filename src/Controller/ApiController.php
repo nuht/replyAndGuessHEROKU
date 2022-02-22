@@ -84,6 +84,8 @@ class ApiController extends AbstractController
     public function sendEmail(MailerInterface $mailer, Request $request, UserPasswordHasherInterface $passwordHasher
     ): JsonResponse
     {
+        $apiUrl = $_ENV['API_URL'];
+
         /*
          * Vérifier que l'user est bien de role company
          * Envoyer un email pour chaque email de la liste
@@ -121,7 +123,7 @@ class ApiController extends AbstractController
                     $om->persist($currentUser);
                 }
 
-                $url = 'http://127.0.0.1:8000/answerSurvey?userHash='. $currentUser->getHash() .'&surveyHash=' . $survey->getHash();
+                $url = "${apiUrl}/answerSurvey?userHash={$currentUser->getHash()}&surveyHash={$survey->getHash()}";
 
                 $email = (new Email())
                     ->from('replySurvey@project.com')

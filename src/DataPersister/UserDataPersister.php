@@ -38,7 +38,7 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
      */
     public function persist($data, array $context = [])
     {
-        if($context['item_operation_name'] === 'put')
+        if(array_key_exists('item_operation_name', $context) && $context['item_operation_name'] === 'put')
         {
             /*User en base*/
             $previousDataUser = $context['previous_data'];

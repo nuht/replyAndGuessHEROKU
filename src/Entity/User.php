@@ -22,16 +22,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity("email")
  */
 #[ApiResource(
-    normalizationContext: ['user' => ['read']],
-    denormalizationContext: ['user' => ['write']],
-    collectionOperations: [
-    'post' => ['validation_groups' => ['Default', 'create']]
-    ],
-    itemOperations: [
-        "get" => ["security" => "is_granted('ROLE_ADMIN') or object.getHash() == user.getHash()"],
-        "put" => ["security" => "is_granted('ROLE_ADMIN') or object.getHash() == user.getHash()"],
-        "delete" => ["security" => "is_granted('ROLE_ADMIN') or object.getHash() == user.getHash()"]
-    ]
+  collectionOperations: [
+      'post' => ['validation_groups' => ['Default', 'create']]
+  ],
+  itemOperations: [
+      "get" => ["security" => "is_granted('ROLE_ADMIN') or object.getHash() == user.getHash()"],
+      "put" => ["security" => "is_granted('ROLE_ADMIN') or object.getHash() == user.getHash()"],
+      "delete" => ["security" => "is_granted('ROLE_ADMIN') or object.getHash() == user.getHash()"]
+  ],
+  denormalizationContext: ['groups' => ['user:write']],
+  normalizationContext: ['groups' => ['user:read']]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -67,7 +67,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @Groups("user:write")
      * @Assert\NotBlank(groups={"create"})
-     * @SerializedName("password")
      */
     private $plainpassword;
 
@@ -106,12 +105,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $lastConnectionDate;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     * @Groups({"user:read", "user:write"})
-     */
-    private $birthdate;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -221,12 +214,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->plainPassword = null;
     }
 
-    public function getPlainpassword(): ?string
+    public function getPlainPassword(): ?string
     {
         return $this->plainpassword;
     }
 
-    public function setPlainpassword(string $plainpassword): self
+    public function setPlainPassword(string $plainpassword): self
     {
         $this->plainpassword = $plainpassword;
 
@@ -313,18 +306,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastConnectionDate(?\DateTimeInterface $lastConnectionDate): self
     {
         $this->lastConnectionDate = $lastConnectionDate;
-
-        return $this;
-    }
-
-    public function getBirthdate(): ?\DateTimeInterface
-    {
-        return $this->birthdate;
-    }
-
-    public function setBirthdate(?\DateTimeInterface $birthdate): self
-    {
-        $this->birthdate = $birthdate;
 
         return $this;
     }

@@ -61,7 +61,6 @@ class AppFixtures extends Fixture implements FixtureInterface
         $userAdmin->setPassword($password);
         $userAdmin->setGender(false);
         $userAdmin->setIsPending(false);
-        $userAdmin->setBirthdate(new \DateTime('1993-05-08', new \DateTimeZone('Europe/Paris')));
         $userAdmin->setRoles(['ROLE_COMPANY']);
 
         $manager->persist($userAdmin);
