@@ -1,6 +1,6 @@
 ###> symfony/framework-bundle ###
 /.env.local
-/.env
+### /.env
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
@@ -12,7 +12,7 @@
 /.idea
 
 ###> lexik/jwt-authentication-bundle ###
-/config/jwt/*.pem
+#/config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
 
 ###> symfony/webpack-encore-bundle ###

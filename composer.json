@@ -76,7 +76,8 @@
       "requirements-checker": "script"
     },
     "post-install-cmd": [
-      "@auto-scripts"
+      "@auto-scripts",
+      "php bin/console doctrine:fixtures:load --append"
     ],
     "post-update-cmd": [
       "@auto-scripts"
