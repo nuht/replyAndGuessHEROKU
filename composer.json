@@ -77,13 +77,14 @@
     },
     "post-install-cmd": [
       "@auto-scripts",
-      "php bin/console doctrine:database:create",
       "php bin/console doctrine:fixtures:load --append"
     ],
     "post-update-cmd": [
       "@auto-scripts"
     ],
     "compile": [
+      "php bin/console doctrine:database:drop --force",
+      "php bin/console doctrine:database:create",
       "php bin/console doctrine:migrations:migrate"
     ]
   },
