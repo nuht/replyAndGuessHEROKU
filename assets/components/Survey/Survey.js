@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { SurveyEdit } from "./SurveyEdit";
 import { Button, CircularProgress } from "@mui/material";
 import { SurveyStatus } from "../SurveyStatus";
-import { mapSurveyApiToSurvey } from "../../domain/survey";
+import { mapSurveyApiToSurvey } from "../../utils/domain/survey";
 
 Survey.propTypes = {
   history: PropTypes.object.isRequired,

@@ -17,11 +17,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {
   ChoicesTypes,
   QuestionTypes,
-} from "../../services/formValidation/types";
+} from "../../utils/formValidation/types";
 import { SurveyLayout } from "./style";
 import { useUserContext } from "../../user-context";
-import { formValidation } from "../../services/formValidation/surveyValidation";
-import { mapToSurveyApiForSurveyEdition } from "../../services/api/api.mapper";
+import { formValidation } from "../../utils/formValidation/surveyValidation";
+import { mapToSurveyApiForSurveyEdition } from "../../utils/api/api.mapper";
 
 SurveyEdit.propTypes = {
   survey: PropTypes.shape({

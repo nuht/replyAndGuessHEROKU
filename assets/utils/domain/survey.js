@@ -1,4 +1,4 @@
-import { ChoicesTypes } from "../services/formValidation/types";
+import { ChoicesTypes } from "../formValidation/types";
 
 /*Découpler du contrat d'interface avec le back*/
 export function mapSurveyApiToSurvey(surveyApi) {

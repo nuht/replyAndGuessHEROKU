@@ -14,14 +14,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { mapSurveyApiToSurvey } from "../../domain/survey";
+import { mapSurveyApiToSurvey } from "../../utils/domain/survey";
 import {
   ChoicesTypes,
   QuestionTypes,
-} from "../../services/formValidation/types";
+} from "../../utils/formValidation/types";
 import { SurveyLayout } from "./style";
 import { red } from "@mui/material/colors";
-import { mapToResultApiForSurveyAnswering } from "../../services/api/api.mapper";
+import { mapToResultApiForSurveyAnswering } from "../../utils/api/api.mapper";
 
 SurveyAnswer.propTypes = {
   history: PropTypes.object.isRequired,

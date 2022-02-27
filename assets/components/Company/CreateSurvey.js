@@ -18,12 +18,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
 import { SurveyLayout } from "../Survey/style";
 import { useUserContext } from "../../user-context";
-import { mapToSurveyApiForSurveyCreation } from "../../services/api/api.mapper";
+import { mapToSurveyApiForSurveyCreation } from "../../utils/api/api.mapper";
 import {
   ChoicesTypes,
   QuestionTypes,
-} from "../../services/formValidation/types";
-import { formValidation } from "../../services/formValidation/surveyValidation";
+} from "../../utils/formValidation/types";
+import { formValidation } from "../../utils/formValidation/surveyValidation";
 
 CreateSurvey.propTypes = {
   history: PropTypes.object.isRequired,
