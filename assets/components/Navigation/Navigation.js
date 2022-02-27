@@ -68,13 +68,6 @@ export function Navigation(props) {
             </NavbarLinks>
           </Button>
         )}
-        {!userHasCompanyRole && (
-          <Button variant={location.pathname === "/" ? CONTAINED : OUTLINED}>
-            <NavbarLinks active={location.pathname === "/"}>
-              <Link to="/">Je ne suis pas un usercompany</Link>
-            </NavbarLinks>
-          </Button>
-        )}
         <Button variant={location.pathname === "/" ? CONTAINED : OUTLINED}>
           <NavbarLinks active={location.pathname === "/"}>
             <Link to="/">Home</Link>

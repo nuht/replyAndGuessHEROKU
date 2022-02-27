@@ -81,8 +81,6 @@ function App(props) {
   return (
     <UserContext.Provider value={user}>
       <Route
-        path="/answerSurvey"
-        exact
         render={(routeProps) => {
           if (routeProps.match.path === "/answerSurvey") {
             return null;
