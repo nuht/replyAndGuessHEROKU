@@ -66,7 +66,7 @@ Encore
     // uncomment if you use React
     .enableReactPreset()
     .configureDefinePlugin(options => {
-        const env = dotenv.config();
+        const env = dotenv.config({ path: Encore.isProduction() ? './.env' : './.env.local' });
 
         if (env.error) {
             throw env.error;
