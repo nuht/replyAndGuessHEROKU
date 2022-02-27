@@ -50,6 +50,7 @@ export function SurveyCard(props) {
         </CardContent>
       </Link>
       <CardActions>
+        {/*<TextField id="outlined-basic" label="Outlined" variant="outlined" />*/}
         <Button onClick={props.toggleSurveyStatus} size="small">
           {getButtonTitle(props.survey.status)}
         </Button>

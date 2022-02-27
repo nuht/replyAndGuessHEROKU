@@ -16,11 +16,11 @@ class Kernel extends BaseKernel
         $container->import('../config/{packages}/*.yaml');
         $container->import('../config/{packages}/'.$this->environment.'/*.yaml');
 
-        if (is_file(\dirname(__DIR__).'/config/utils.yaml')) {
-            $container->import('../config/utils.yaml');
-            $container->import('../config/{utils}_'.$this->environment.'.yaml');
+        if (is_file(\dirname(__DIR__).'/config/services.yaml')) {
+            $container->import('../config/services.yaml');
+            $container->import('../config/{services}_'.$this->environment.'.yaml');
         } else {
-            $container->import('../config/{utils}.php');
+            $container->import('../config/{services}.php');
         }
     }
 
