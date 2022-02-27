@@ -38,9 +38,10 @@ App.propTypes = {
 function App(props) {
   const [user, setUser] = React.useState(null);
   React.useEffect(() => {
-    if (localStorage.getItem("logged_in") === "true") {
-      getAndSetUserRoles();
-    }
+    // if (localStorage.getItem("logged_in") === "true") {
+    //
+    // }
+    getAndSetUserRoles();
   }, []);
 
   function getAndSetUserRoles() {
