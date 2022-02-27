@@ -17,7 +17,7 @@ import {
 import "./main.css";
 
 // start the Stimulus application
-import "./bootstrap";
+// import "./bootstrap";
 import "normalize-css";
 import { Navigation } from "./components/Navigation/Navigation";
 import { Register } from "./components/Register";
