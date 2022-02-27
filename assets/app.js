@@ -16,8 +16,6 @@ import {
 // any CSS you import will output into a single css file (toto in this case)
 import "./main.css";
 
-// start the Stimulus application
-// import "./bootstrap";
 import "normalize-css";
 import { Navigation } from "./components/Navigation/Navigation";
 import { Register } from "./components/Register";
