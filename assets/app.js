@@ -49,11 +49,15 @@ function App(props) {
       .then((response) => {
         if (response.status === 401) {
           props.history.push("/login");
+          return;
         }
-
         return response.json();
       })
       .then((body) => {
+        if(body === undefined) {
+          return;
+        }
+        
         setUser({
           id: body.user.id,
           email: body.user.email,
@@ -82,7 +86,7 @@ function App(props) {
     <UserContext.Provider value={user}>
       <Route
         render={(routeProps) => {
-          if (routeProps.match.path === "/answerSurvey") {
+          if (routeProps.location.pathname === "/answerSurvey" || routeProps.location.pathname === "/login") {
             return null;
           }
 
