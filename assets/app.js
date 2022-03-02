@@ -39,15 +39,15 @@ function App(props) {
   const [user, setUser] = React.useState(null);
   React.useEffect(() => {
     // if (localStorage.getItem("logged_in") === "true") {
-    //
     // }
     getAndSetUserRoles();
+
   }, []);
 
   function getAndSetUserRoles() {
     fetch(`${process.env.API_URL}/api/me`)
       .then((response) => {
-        if (response.status === 401) {
+        if (response.status === 401 && props.history.location.pathname !== "/answerSurvey") {
           props.history.push("/login");
           return;
         }
@@ -57,7 +57,7 @@ function App(props) {
         if(body === undefined) {
           return;
         }
-        
+
         setUser({
           id: body.user.id,
           email: body.user.email,

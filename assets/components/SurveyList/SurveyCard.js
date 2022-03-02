@@ -2,7 +2,7 @@ import {
   Button,
   Card,
   CardActions,
-  CardContent,
+  CardContent, Chip,
   Stack, TextField,
   Typography,
 } from "@mui/material";
@@ -31,30 +31,66 @@ function getButtonTitle(status) {
 }
 
 export function SurveyCard(props) {
+  let emailsRef = React.useRef(null);
+  const [emails, setEmails] = React.useState([]);
+
+  function handleOnSubmit(event) {
+    event.preventDefault();
+    console.log(emailsRef.current.value);
+  }
+
+  function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      setEmails(prevEmails => prevEmails.concat(emailsRef.current.value));
+      emailsRef.current.value = "";
+    }
+  }
+
+  function handleDelete(indexDeLEmailQuonveuteffacer) {
+    setEmails(emails.filter((email, indexDeLEmail) => indexDeLEmail !== indexDeLEmailQuonveuteffacer));
+  }
+
   return (
-    <Card sx={{ minWidth: 275 }}>
-      <Link
-        to={"/survey/" + props.survey.id}
-        style={{
-          textDecoration: "none",
-          color: "#333333",
-        }}
-      >
-        <CardContent>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <SurveyStatus status={props.survey.status} />
-            <Typography variant="h5" gutterBottom>
-              {props.survey.title}
-            </Typography>
+    <form onSubmit={handleOnSubmit}>
+      <Card sx={{ minWidth: 275 }}>
+        <Link
+          to={"/survey/" + props.survey.id}
+          style={{
+            textDecoration: "none",
+            color: "#333333",
+          }}
+        >
+          <CardContent>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <SurveyStatus status={props.survey.status} />
+              <Typography variant="h5" gutterBottom>
+                {props.survey.title}
+              </Typography>
+            </Stack>
+          </CardContent>
+        </Link>
+        <Stack spacing={1}>
+          <Stack direction="row" spacing={1}>
+            {emails.map((email, index) => {
+              return <Chip key={index} label={email} onDelete={() => handleDelete(index)}/>
+            })}
           </Stack>
-        </CardContent>
-      </Link>
-      <CardActions>
-        <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-        <Button onClick={props.toggleSurveyStatus} size="small">
-          {getButtonTitle(props.survey.status)}
-        </Button>
-      </CardActions>
-    </Card>
+          <TextField
+            aria-label="emails"
+            label="Entrez des emails"
+            multiline
+            inputRef={emailsRef}
+            fullWidth
+            onKeyPress={handleKeyPress}
+          />
+        </Stack>
+        <CardActions>
+          <Button onClick={props.toggleSurveyStatus} size="small">
+            {getButtonTitle(props.survey.status)}
+          </Button>
+        </CardActions>
+      </Card>
+    </form>
   );
 }
