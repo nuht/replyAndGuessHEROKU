@@ -57,7 +57,6 @@ function App(props) {
         if(body === undefined) {
           return;
         }
-
         setUser({
           id: body.user.id,
           email: body.user.email,
@@ -101,9 +100,6 @@ function App(props) {
           <Route path="/answerSurvey" exact component={SurveyAnswer} />
           <Route path="/survey/:id" exact component={Survey} />
           <Route path="/login" exact component={Login} />;
-          <Route path="/questions">
-            <h1>Liste des questions</h1>
-          </Route>
           <Route path="/register">
             <Register />
           </Route>

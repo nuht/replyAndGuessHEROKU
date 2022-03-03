@@ -67,7 +67,7 @@ class ApiController extends AbstractController
         $user = $userRepository->findBy(['hash' => $hashUser]);
         $survey = $surveyRepository->findBy(['hash' => $hashSurvey]);
 
-        if(sizeof($user) === 0) {
+        if($this->userIsNotFound($user)) {
             return new JsonResponse("L'utilisateur n'existe pas.", Response::HTTP_NOT_FOUND);
         } elseif(sizeof($survey) === 0) {
             return new JsonResponse("Le sondage n'existe pas.", Response::HTTP_NOT_FOUND);;
@@ -85,9 +85,10 @@ class ApiController extends AbstractController
     ): JsonResponse
     {
         $apiUrl = $_ENV['API_URL'];
+        dd($apiUrl);
 
         /*
-         * Vérifier que l'user est bien de role company
+         * Vérifier que l'user possède bien le role company
          * Envoyer un email pour chaque email de la liste
          * */
         $om = $this->getDoctrine()->getManager();
@@ -142,6 +143,15 @@ class ApiController extends AbstractController
 
 
         return new JsonResponse('Email envoyé', 204);
+    }
+
+    /**
+     * @param array $user
+     * @return bool
+     */
+    private function userIsNotFound(array $user): bool
+    {
+        return sizeof($user) === 0;
     }
 
 
